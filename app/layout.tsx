@@ -33,6 +33,15 @@ export default function RootLayout({
 }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="de" suppressHydrationWarning className={`${inter.variable} ${spaceGrotesk.variable} dark`}>
+      <head>
+        <link rel="preconnect" href="https://prod.spline.design" crossOrigin="anonymous" />
+        <link
+          rel="preload"
+          href="https://prod.spline.design/kZDDjO5HuC9GJUM2/scene.splinecode"
+          as="fetch"
+          crossOrigin="anonymous"
+        />
+      </head>
       <body className="antialiased">
         <ThemeProvider attribute="class" forcedTheme="dark" enableSystem={false}>
           {children}
