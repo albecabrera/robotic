@@ -3,9 +3,17 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, ArrowRight } from "lucide-react";
+import { ArrowLeft, ArrowRight, Trash2, Plus, X, Check } from "lucide-react";
 
-const SERVICES = [
+interface Service {
+  id: string;
+  title: string;
+  subtitle: string;
+  description: string;
+  image: string;
+}
+
+const INITIAL_SERVICES: Service[] = [
   {
     id: "01",
     title: "Unterrichtsmaterialien",
@@ -32,22 +40,27 @@ const SERVICES = [
   },
 ];
 
+const EMPTY_FORM = { title: "", subtitle: "", description: "", image: "" };
 const AUTO_PLAY_DURATION = 5000;
 
 export function VerticalTabs() {
+  const [services, setServices] = useState<Service[]>(INITIAL_SERVICES);
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const [adding, setAdding] = useState(false);
+  const [form, setForm] = useState(EMPTY_FORM);
+  const [formError, setFormError] = useState("");
 
   const handleNext = useCallback(() => {
     setDirection(1);
-    setActiveIndex((prev) => (prev + 1) % SERVICES.length);
-  }, []);
+    setActiveIndex((prev) => (prev + 1) % services.length);
+  }, [services.length]);
 
   const handlePrev = useCallback(() => {
     setDirection(-1);
-    setActiveIndex((prev) => (prev - 1 + SERVICES.length) % SERVICES.length);
-  }, []);
+    setActiveIndex((prev) => (prev - 1 + services.length) % services.length);
+  }, [services.length]);
 
   const handleTabClick = (index: number) => {
     if (index === activeIndex) return;
@@ -56,11 +69,44 @@ export function VerticalTabs() {
     setIsPaused(false);
   };
 
+  const handleDelete = (index: number, e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (services.length === 1) return;
+    const next = services.filter((_, i) => i !== index);
+    setServices(next);
+    setActiveIndex((prev) => Math.min(prev, next.length - 1));
+  };
+
+  const handleAdd = () => {
+    if (!form.title.trim()) { setFormError("Titel ist Pflicht."); return; }
+    const newId = String(services.length + 1).padStart(2, "0");
+    const newService: Service = {
+      id: newId,
+      title: form.title.trim(),
+      subtitle: form.subtitle.trim() || "Neuer Bereich",
+      description: form.description.trim() || "Beschreibung folgt.",
+      image: form.image.trim() || "https://images.unsplash.com/photo-1516321318423-f06f85e504b3?q=80&w=1200",
+    };
+    const next = [...services, newService];
+    setServices(next);
+    setActiveIndex(next.length - 1);
+    setDirection(1);
+    setForm(EMPTY_FORM);
+    setFormError("");
+    setAdding(false);
+  };
+
+  const cancelAdd = () => {
+    setAdding(false);
+    setForm(EMPTY_FORM);
+    setFormError("");
+  };
+
   useEffect(() => {
-    if (isPaused) return;
+    if (isPaused || adding) return;
     const interval = setInterval(handleNext, AUTO_PLAY_DURATION);
     return () => clearInterval(interval);
-  }, [activeIndex, isPaused, handleNext]);
+  }, [activeIndex, isPaused, adding, handleNext]);
 
   const variants = {
     enter: (dir: number) => ({ y: dir > 0 ? "-100%" : "100%", opacity: 0 }),
@@ -76,21 +122,22 @@ export function VerticalTabs() {
           {/* Left: tabs */}
           <div className="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1 pt-4">
             <div className="space-y-1 mb-12">
-              <h2 className="heading-2 text-balance">
-                Was euch im Unterricht erwartet
-              </h2>
+              <h2 className="heading-2 text-balance">Was euch im Unterricht erwartet</h2>
               <span className="eyebrow block ml-0.5 mt-2">Bereiche</span>
             </div>
 
             <div className="flex flex-col space-y-0">
-              {SERVICES.map((service, index) => {
+              {services.map((service, index) => {
                 const isActive = activeIndex === index;
                 return (
-                  <button
-                    key={service.id}
+                  <div
+                    key={service.id + index}
+                    role="button"
+                    tabIndex={0}
                     onClick={() => handleTabClick(index)}
+                    onKeyDown={(e) => e.key === "Enter" && handleTabClick(index)}
                     className={cn(
-                      "group relative flex items-start gap-4 py-6 md:py-8 text-left transition-all duration-500 border-t border-border/50 first:border-0",
+                      "group/tab relative flex items-start gap-4 py-6 md:py-8 text-left transition-all duration-500 border-t border-border/50 first:border-0 cursor-pointer",
                       isActive ? "text-foreground" : "text-muted-foreground/60 hover:text-foreground"
                     )}
                   >
@@ -100,7 +147,7 @@ export function VerticalTabs() {
                           key={`progress-${index}-${isPaused}`}
                           className="absolute top-0 left-0 w-full bg-foreground origin-top"
                           initial={{ height: "0%" }}
-                          animate={isPaused ? { height: "0%" } : { height: "100%" }}
+                          animate={isPaused || adding ? { height: "0%" } : { height: "100%" }}
                           transition={{ duration: AUTO_PLAY_DURATION / 1000, ease: "linear" }}
                         />
                       )}
@@ -110,7 +157,7 @@ export function VerticalTabs() {
                       /{service.id}
                     </span>
 
-                    <div className="flex flex-col gap-2 flex-1">
+                    <div className="flex flex-col gap-2 flex-1 min-w-0">
                       <span className={cn(
                         "text-2xl md:text-3xl lg:text-4xl font-normal tracking-tight transition-colors duration-500",
                         isActive ? "text-foreground" : ""
@@ -137,10 +184,94 @@ export function VerticalTabs() {
                         )}
                       </AnimatePresence>
                     </div>
-                  </button>
+
+                    {/* Delete button — visible on hover, disabled if only 1 item */}
+                    {services.length > 1 && (
+                      <button
+                        onClick={(e) => handleDelete(index, e)}
+                        className="opacity-0 group-hover/tab:opacity-100 transition-opacity shrink-0 mt-1 p-1.5 rounded-md text-muted-foreground/50 hover:text-red-400 hover:bg-red-400/10"
+                        aria-label={`${service.title} löschen`}
+                      >
+                        <Trash2 size={14} />
+                      </button>
+                    )}
+                  </div>
                 );
               })}
             </div>
+
+            {/* Add new */}
+            <AnimatePresence mode="wait">
+              {adding ? (
+                <motion.div
+                  key="form"
+                  initial={{ opacity: 0, height: 0 }}
+                  animate={{ opacity: 1, height: "auto" }}
+                  exit={{ opacity: 0, height: 0 }}
+                  transition={{ duration: 0.25 }}
+                  className="overflow-hidden mt-4"
+                >
+                  <div className="rounded-xl border border-border/60 bg-muted/20 p-4 space-y-3">
+                    <p className="text-xs font-semibold uppercase tracking-widest text-muted-foreground">
+                      Neuer Bereich
+                    </p>
+                    <input
+                      autoFocus
+                      value={form.title}
+                      onChange={(e) => { setForm(f => ({ ...f, title: e.target.value })); setFormError(""); }}
+                      placeholder="Titel *"
+                      className="w-full bg-transparent border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground/30"
+                    />
+                    <input
+                      value={form.subtitle}
+                      onChange={(e) => setForm(f => ({ ...f, subtitle: e.target.value }))}
+                      placeholder="Untertitel"
+                      className="w-full bg-transparent border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground/30"
+                    />
+                    <textarea
+                      value={form.description}
+                      onChange={(e) => setForm(f => ({ ...f, description: e.target.value }))}
+                      placeholder="Beschreibung"
+                      rows={2}
+                      className="w-full bg-transparent border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground/30 resize-none"
+                    />
+                    <input
+                      value={form.image}
+                      onChange={(e) => setForm(f => ({ ...f, image: e.target.value }))}
+                      placeholder="Bild-URL (optional)"
+                      className="w-full bg-transparent border border-border/50 rounded-lg px-3 py-2 text-sm text-foreground placeholder:text-muted-foreground/40 focus:outline-none focus:border-foreground/30"
+                    />
+                    {formError && <p className="text-xs text-red-400">{formError}</p>}
+                    <div className="flex gap-2 pt-1">
+                      <button
+                        onClick={handleAdd}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-foreground text-background text-xs font-medium hover:opacity-80 transition-opacity"
+                      >
+                        <Check size={12} /> Speichern
+                      </button>
+                      <button
+                        onClick={cancelAdd}
+                        className="flex items-center gap-1.5 px-3 py-1.5 rounded-lg border border-border/50 text-muted-foreground text-xs hover:text-foreground transition-colors"
+                      >
+                        <X size={12} /> Abbrechen
+                      </button>
+                    </div>
+                  </div>
+                </motion.div>
+              ) : (
+                <motion.button
+                  key="add-btn"
+                  initial={{ opacity: 0 }}
+                  animate={{ opacity: 1 }}
+                  exit={{ opacity: 0 }}
+                  onClick={() => setAdding(true)}
+                  className="mt-4 flex items-center gap-2 text-xs text-muted-foreground/50 hover:text-foreground transition-colors border-t border-border/30 pt-4 w-full"
+                >
+                  <Plus size={13} />
+                  Bereich hinzufügen
+                </motion.button>
+              )}
+            </AnimatePresence>
           </div>
 
           {/* Right: image */}
@@ -153,7 +284,7 @@ export function VerticalTabs() {
               <div className="relative aspect-4/5 md:aspect-4/3 lg:aspect-16/11 rounded-3xl md:rounded-[2.5rem] overflow-hidden bg-muted/30 border border-border/40">
                 <AnimatePresence initial={false} custom={direction} mode="popLayout">
                   <motion.div
-                    key={activeIndex}
+                    key={activeIndex + services[activeIndex]?.id}
                     custom={direction}
                     variants={variants}
                     initial="enter"
@@ -167,8 +298,8 @@ export function VerticalTabs() {
                     onClick={handleNext}
                   >
                     <img
-                      src={SERVICES[activeIndex].image}
-                      alt={SERVICES[activeIndex].title}
+                      src={services[activeIndex]?.image}
+                      alt={services[activeIndex]?.title}
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     />
                     <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-60" />
