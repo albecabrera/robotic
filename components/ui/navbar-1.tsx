@@ -1,6 +1,7 @@
 "use client"
 
 import React, { useEffect, useRef, useState } from "react"
+import { useAuth } from "@/contexts/auth-context"
 
 const navItems = [
   { label: "Materialien", href: "#materialien" },
@@ -45,6 +46,7 @@ const logoElement = (
 )
 
 const Navbar1 = () => {
+  const { isAdmin, openLogin, logout } = useAuth()
   const [isOpen, setIsOpen] = useState(false)
   const [active, setActive] = useState("#materialien")
   const [progress, setProgress] = useState(0)
@@ -125,6 +127,22 @@ const Navbar1 = () => {
           ))}
         </nav>
 
+
+        {/* Admin avatar — top-right */}
+        {isAdmin ? (
+          <div className="group/avatar relative flex items-center gap-2">
+            <button
+              onClick={logout}
+              className="flex items-center gap-2 rounded-full border border-white/20 bg-white/10 pl-1 pr-3 py-1 hover:bg-white/15 transition-colors"
+              aria-label="Abmelden"
+            >
+              <div className="flex h-7 w-7 items-center justify-center rounded-full bg-white text-[11px] font-bold tracking-wide text-black select-none">
+                CA
+              </div>
+              <span className="hidden text-xs font-semibold text-white sm:inline">Alberto Cabrera</span>
+            </button>
+          </div>
+        ) : null}
 
         <button
           className="flex min-h-14 min-w-14 items-center justify-center text-gray-300 sm:hidden"

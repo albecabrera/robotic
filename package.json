@@ -6,7 +6,9 @@
     "dev": "next dev",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "build:xampp": "BASE_PATH=/robotic next build",
+    "deploy:xampp": "npm run build:xampp && rm -rf /Users/acabrera/xampp-data/htdocs/robotic && cp -r out /Users/acabrera/xampp-data/htdocs/robotic"
   },
   "dependencies": {
     "clsx": "^2.1.1",

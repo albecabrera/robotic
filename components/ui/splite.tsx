@@ -1,11 +1,22 @@
 'use client'
 
-import { Suspense, lazy, Component, type ReactNode } from 'react'
+import { Suspense, lazy, Component, type ReactNode, useState, useEffect } from 'react'
 
-// Kick off the runtime download at module evaluation so it runs in
-// parallel with hydration instead of waiting for the first render.
 const splineModule = import('@splinetool/react-spline')
 const Spline = lazy(() => splineModule)
+
+function detectWebGL(): boolean {
+  if (typeof window === 'undefined') return false
+  try {
+    const canvas = document.createElement('canvas')
+    return !!(
+      canvas.getContext('webgl') ||
+      canvas.getContext('experimental-webgl')
+    )
+  } catch {
+    return false
+  }
+}
 
 interface SplineSceneProps {
   scene: string
@@ -47,6 +58,20 @@ const Fallback = () => (
 )
 
 export function SplineScene({ scene, className }: SplineSceneProps) {
+  const [webglOk, setWebglOk] = useState<boolean | null>(null)
+
+  useEffect(() => {
+    setWebglOk(detectWebGL())
+  }, [])
+
+  if (webglOk === null) return (
+    <div className="flex h-full min-h-[220px] w-full items-center justify-center">
+      <span className="text-sm text-muted-foreground">3D-Szene wird geladen...</span>
+    </div>
+  )
+
+  if (!webglOk) return <Fallback />
+
   return (
     <SplineErrorBoundary fallback={<Fallback />}>
       <Suspense

@@ -8,6 +8,7 @@ import { SplineSceneBasic } from "@/components/blocks/spline-hero"
 import { VerticalTabs } from "@/components/ui/vertical-tabs"
 import { Testimonials } from "@/components/ui/testimonials-columns-1"
 import Footer4Col from "@/components/ui/footer-column"
+import NotesPlanning from "@/components/ui/notes-planning"
 
 const materials = [
   {
@@ -170,6 +171,10 @@ export default function Home() {
       </section>
 
       <Testimonials />
+
+      <section id="planung">
+        <NotesPlanning />
+      </section>
 
       <section id="kontakt">
         <Footer4Col />

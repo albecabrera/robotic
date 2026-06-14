@@ -1,6 +1,8 @@
 import type { Metadata, Viewport } from "next";
 import { Inter, Space_Grotesk } from "next/font/google";
 import { ThemeProvider } from "next-themes";
+import { AuthProvider } from "@/contexts/auth-context";
+import { AdminBadge } from "@/components/ui/admin-badge";
 import "./globals.css";
 
 const inter = Inter({
@@ -44,7 +46,10 @@ export default function RootLayout({
       </head>
       <body className="antialiased">
         <ThemeProvider attribute="class" forcedTheme="dark" enableSystem={false}>
-          {children}
+          <AuthProvider>
+            {children}
+            <AdminBadge />
+          </AuthProvider>
         </ThemeProvider>
       </body>
     </html>

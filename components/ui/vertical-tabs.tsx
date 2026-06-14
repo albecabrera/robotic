@@ -3,7 +3,9 @@
 import React, { useState, useEffect, useCallback } from "react";
 import { motion, AnimatePresence } from "motion/react";
 import { cn } from "@/lib/utils";
-import { ArrowLeft, ArrowRight, Trash2, Plus, X, Check } from "lucide-react";
+import { ArrowLeft, ArrowRight, Trash2, Plus, X, Check, Lock, Unlock } from "lucide-react";
+
+import { useAuth } from "@/contexts/auth-context";
 
 interface Service {
   id: string;
@@ -48,6 +50,7 @@ export function VerticalTabs() {
   const [activeIndex, setActiveIndex] = useState(0);
   const [direction, setDirection] = useState(0);
   const [isPaused, setIsPaused] = useState(false);
+  const { isAdmin, openLogin, logout } = useAuth();
   const [adding, setAdding] = useState(false);
   const [form, setForm] = useState(EMPTY_FORM);
   const [formError, setFormError] = useState("");
@@ -123,7 +126,16 @@ export function VerticalTabs() {
           <div className="lg:col-span-5 flex flex-col justify-center order-2 lg:order-1 pt-4">
             <div className="space-y-1 mb-12">
               <h2 className="heading-2 text-balance">Was euch im Unterricht erwartet</h2>
-              <span className="eyebrow block ml-0.5 mt-2">Bereiche</span>
+              <div className="flex items-center gap-2 mt-2">
+                <span className="eyebrow ml-0.5">Bereiche</span>
+                <button
+                  onClick={() => isAdmin ? logout() : openLogin()}
+                  className="p-1 rounded text-muted-foreground/30 hover:text-muted-foreground transition-colors"
+                  aria-label={isAdmin ? "Abmelden" : "Anmelden"}
+                >
+                  {isAdmin ? <Unlock size={12} /> : <Lock size={12} />}
+                </button>
+              </div>
             </div>
 
             <div className="flex flex-col space-y-0">
@@ -185,8 +197,8 @@ export function VerticalTabs() {
                       </AnimatePresence>
                     </div>
 
-                    {/* Delete button — visible on hover, disabled if only 1 item */}
-                    {services.length > 1 && (
+                    {/* Delete button — admin only, visible on hover */}
+                    {isAdmin && services.length > 1 && (
                       <button
                         onClick={(e) => handleDelete(index, e)}
                         className="opacity-0 group-hover/tab:opacity-100 transition-opacity shrink-0 mt-1 p-1.5 rounded-md text-muted-foreground/50 hover:text-red-400 hover:bg-red-400/10"
@@ -200,9 +212,9 @@ export function VerticalTabs() {
               })}
             </div>
 
-            {/* Add new */}
+            {/* Add new — admin only */}
             <AnimatePresence mode="wait">
-              {adding ? (
+              {isAdmin && adding ? (
                 <motion.div
                   key="form"
                   initial={{ opacity: 0, height: 0 }}
@@ -258,7 +270,7 @@ export function VerticalTabs() {
                     </div>
                   </div>
                 </motion.div>
-              ) : (
+              ) : isAdmin ? (
                 <motion.button
                   key="add-btn"
                   initial={{ opacity: 0 }}
@@ -270,7 +282,7 @@ export function VerticalTabs() {
                   <Plus size={13} />
                   Bereich hinzufügen
                 </motion.button>
-              )}
+              ) : null}
             </AnimatePresence>
           </div>
 
