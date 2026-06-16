@@ -52,24 +52,41 @@ export default function ElternSection() {
             return (
               <motion.div
                 key={card.title}
-                initial={{ opacity: 0, y: 28 }}
-                animate={inView ? { opacity: 1, y: 0 } : {}}
-                transition={{ duration: 0.45, delay: i * 0.12 }}
-                className="flex flex-col gap-4 rounded-2xl border bg-card p-6 shadow-sm"
+                initial={{ opacity: 0, y: 28, scale: 0.93 }}
+                animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+                transition={{ type: "spring", stiffness: 260, damping: 22, delay: i * 0.12 }}
+                whileHover={{
+                  scale: 1.04,
+                  y: -6,
+                  boxShadow: `0 12px 32px ${card.color}28`,
+                  borderColor: `${card.color}80`,
+                }}
+                whileTap={{ scale: 0.97 }}
+                className="relative flex flex-col gap-4 rounded-2xl border bg-card p-6 shadow-sm overflow-hidden cursor-default"
               >
-                <div
-                  className="flex h-11 w-11 items-center justify-center rounded-xl"
+                <motion.span
+                  aria-hidden
+                  className="pointer-events-none absolute inset-0 rounded-2xl"
+                  style={{ background: `radial-gradient(circle at 50% 0%, ${card.color}12, transparent 65%)` }}
+                  initial={{ opacity: 0 }}
+                  whileHover={{ opacity: 1 }}
+                  transition={{ duration: 0.2 }}
+                />
+                <motion.div
+                  className="relative z-10 flex h-11 w-11 items-center justify-center rounded-xl"
                   style={{ background: `${card.color}18` }}
+                  whileHover={{ scale: 1.15, rotate: 5 }}
+                  transition={{ type: "spring", stiffness: 400, damping: 20 }}
                 >
                   <Icon className="h-5 w-5" style={{ color: card.color }} />
-                </div>
-                <div>
+                </motion.div>
+                <div className="relative z-10">
                   <h3 className="text-base font-bold text-foreground">{card.title}</h3>
                   <p className="mt-2 text-sm leading-6 text-muted-foreground">{card.desc}</p>
                 </div>
                 <a
                   href={card.link}
-                  className="mt-auto inline-flex items-center gap-1 text-xs font-semibold transition-colors hover:text-foreground"
+                  className="relative z-10 mt-auto inline-flex items-center gap-1 text-xs font-semibold transition-colors hover:text-foreground"
                   style={{ color: card.color }}
                 >
                   {card.linkLabel} →

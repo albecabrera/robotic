@@ -61,13 +61,36 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
   return (
     <motion.article
       ref={ref}
-      initial={{ opacity: 0, y: 24 }}
-      animate={inView ? { opacity: 1, y: 0 } : {}}
-      transition={{ duration: 0.45, delay: index * 0.08 }}
-      className="flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm"
+      initial={{ opacity: 0, y: 28, scale: 0.93 }}
+      animate={inView ? { opacity: 1, y: 0, scale: 1 } : {}}
+      transition={{ type: "spring", stiffness: 260, damping: 22, delay: index * 0.09 }}
+      whileHover={{
+        scale: 1.04,
+        y: -6,
+        boxShadow: `0 12px 32px ${project.color}30`,
+        borderColor: `${project.color}80`,
+      }}
+      whileTap={{ scale: 0.97 }}
+      className="relative flex flex-col gap-3 rounded-2xl border bg-card p-5 shadow-sm overflow-hidden cursor-default"
     >
-      <div className="flex items-start justify-between gap-2">
-        <span className="text-3xl" role="img" aria-label={project.title}>{project.emoji}</span>
+      <motion.span
+        aria-hidden
+        className="pointer-events-none absolute inset-0 rounded-2xl"
+        style={{ background: `radial-gradient(circle at 50% 0%, ${project.color}12, transparent 65%)` }}
+        initial={{ opacity: 0 }}
+        whileHover={{ opacity: 1 }}
+        transition={{ duration: 0.2 }}
+      />
+      <div className="relative z-10 flex items-start justify-between gap-2">
+        <motion.span
+          className="text-3xl"
+          role="img"
+          aria-label={project.title}
+          whileHover={{ scale: 1.2, rotate: [0, -10, 10, 0] }}
+          transition={{ duration: 0.35 }}
+        >
+          {project.emoji}
+        </motion.span>
         <span
           className="rounded-full px-2.5 py-0.5 text-[10px] font-semibold uppercase tracking-wider"
           style={{ background: `${project.color}18`, color: project.color }}
@@ -75,13 +98,18 @@ function ProjectCard({ project, index }: { project: typeof projects[0]; index: n
           {project.grade}
         </span>
       </div>
-      <h3 className="text-base font-bold text-foreground">{project.title}</h3>
-      <p className="text-xs leading-5 text-muted-foreground">{project.desc}</p>
-      <div className="mt-auto flex flex-wrap gap-1.5 pt-1">
+      <h3 className="relative z-10 text-base font-bold text-foreground">{project.title}</h3>
+      <p className="relative z-10 text-xs leading-5 text-muted-foreground">{project.desc}</p>
+      <div className="relative z-10 mt-auto flex flex-wrap gap-1.5 pt-1">
         {project.tags.map((tag) => (
-          <span key={tag} className="rounded-full border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground">
+          <motion.span
+            key={tag}
+            className="rounded-full border border-border px-2 py-0.5 text-[10px] font-medium text-muted-foreground"
+            whileHover={{ borderColor: project.color, color: project.color, scale: 1.08 }}
+            transition={{ duration: 0.15 }}
+          >
             {tag}
-          </span>
+          </motion.span>
         ))}
       </div>
     </motion.article>

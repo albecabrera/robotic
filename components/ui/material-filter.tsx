@@ -47,8 +47,8 @@ export default function MaterialFilter() {
 
       {/* cards */}
       <div className="grid gap-4 md:grid-cols-3">
-        {visible.map((m) => (
-          <MaterialCard key={m.title} title={m.title} items={m.items} level={m.level} />
+        {visible.map((m, i) => (
+          <MaterialCard key={m.title} title={m.title} items={m.items} level={m.level} index={i} />
         ))}
       </div>
     </div>
