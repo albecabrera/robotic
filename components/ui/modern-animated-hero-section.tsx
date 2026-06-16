@@ -117,11 +117,10 @@ const RainingLetters: React.FC = () => {
           style={{
             left: `${char.x}%`,
             top: `${char.y}%`,
-            transform: `translate(-50%, -50%) ${activeIndices.has(index) ? 'scale(1.25)' : 'scale(1)'}`,
+            transform: `translate(-50%, -50%)${activeIndices.has(index) ? ' scale(1.25)' : ''}`,
             textShadow: activeIndices.has(index) ? '0 0 8px rgba(255,255,255,0.8)' : 'none',
             opacity: activeIndices.has(index) ? 1 : 0.4,
             fontSize: '1.8rem',
-            willChange: 'transform, top',
           }}
         >
           {char.char}

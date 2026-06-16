@@ -1,3 +1,4 @@
+import React from "react"
 import { GlowingButton } from "@/components/ui/glowing-button"
 import { MaterialCard } from "@/components/ui/material-card"
 import { Navbar1 } from "@/components/ui/navbar-1"
@@ -9,6 +10,30 @@ import { VerticalTabs } from "@/components/ui/vertical-tabs"
 import { Testimonials } from "@/components/ui/testimonials-columns-1"
 import Footer4Col from "@/components/ui/footer-column"
 import NotesPlanning from "@/components/ui/notes-planning"
+import { SiScratch, SiPython, SiHtml5 } from "react-icons/si"
+import { LayoutGrid, Smartphone, Cpu, Triangle, Code2, Coffee } from "lucide-react"
+import type { IconType } from "react-icons"
+import type { LucideIcon } from "lucide-react"
+
+type ToolEntry = {
+  name: string
+  level: string
+  tag: string
+  Icon: IconType | LucideIcon
+  color: string
+}
+
+const programmingTools: ToolEntry[] = [
+  { name: "Cubi",              level: "Kl. 5–7",  tag: "Blockprogrammierung",  Icon: LayoutGrid, color: "#f97316" },
+  { name: "Scratch",           level: "Kl. 5–7",  tag: "Blockprogrammierung",  Icon: SiScratch,  color: "#ff8c1a" },
+  { name: "App Inventor",      level: "Kl. 7–10", tag: "App-Entwicklung",      Icon: Smartphone, color: "#22c55e" },
+  { name: "Calliope / Callibot", level: "WP",    tag: "Physical Computing",   Icon: Cpu,        color: "#a855f7" },
+  { name: "XLogo",             level: "Kl. 6–7",  tag: "Turtle-Grafik",        Icon: Triangle,   color: "#3b82f6" },
+  { name: "TigerJython",       level: "Kl. 8+",   tag: "Python-Einführung",    Icon: Code2,      color: "#fbbf24" },
+  { name: "HTML & CSS",        level: "Kl. 8+",   tag: "Webentwicklung",       Icon: SiHtml5,    color: "#ef4444" },
+  { name: "Python",            level: "Kl. 9+",   tag: "Skriptsprache",        Icon: SiPython,   color: "#3b82f6" },
+  { name: "Java",              level: "EF–Q2",    tag: "OOP",                  Icon: Coffee,     color: "#f97316" },
+]
 
 const materials = [
   {
@@ -54,7 +79,7 @@ export default function Home() {
 
       <Navbar1 />
 
-      <section id="inicio" className="mx-auto w-[calc(100%-2rem)] max-w-6xl pb-10 pt-24 sm:pt-28 md:pb-14 xl:pt-32">
+      <section id="inicio" className="mx-auto w-full max-w-6xl px-4 sm:px-6 lg:px-8 pb-10 pt-24 sm:pt-28 md:pb-14 xl:pt-32">
         <SplineSceneBasic />
       </section>
 
@@ -72,20 +97,17 @@ export default function Home() {
             <p className="mt-4 lead">
               Wir starten mit visuellen Umgebungen und arbeiten uns Schritt für Schritt bis hin zu professionellen Programmiersprachen vor.
             </p>
-            <ul className="mt-6 space-y-3 text-sm text-muted-foreground">
-              {[
-                "Scratch — Blockprogrammierung für Einsteiger",
-                "XLogo — Algorithmisches Denken mit der Turtle",
-                "Tigerjython — erster Einstieg in Python-Syntax",
-                "HTML & CSS — Struktur und Design im Web",
-                "Python — vielseitige Skriptsprache",
-                "Java — objektorientierte Programmierung",
-              ].map((item) => (
-                <li key={item} className="flex items-center gap-3">
-                  <span className="h-1.5 w-1.5 shrink-0 rounded-full bg-primary" />
-                  {item}
-                </li>
-              ))}
+            <ul className="mt-6 grid grid-cols-3 gap-2">
+              {programmingTools.map((tool) => {
+                const Icon = tool.Icon as React.ElementType
+                return (
+                  <li key={tool.name} className="flex flex-col gap-2 rounded-xl border bg-card p-3 shadow-sm">
+                    <Icon className="h-6 w-6 shrink-0" style={{ color: tool.color }} />
+                    <span className="text-xs font-semibold text-foreground leading-tight">{tool.name}</span>
+                    <span className="text-[10px] text-muted-foreground">{tool.level}</span>
+                  </li>
+                )
+              })}
             </ul>
           </div>
           <OrbitingSkills />
