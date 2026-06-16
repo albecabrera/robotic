@@ -4,9 +4,10 @@ import React, { useEffect, useRef, useState } from "react"
 import { useAuth } from "@/contexts/auth-context"
 
 const navItems = [
+  { label: "Lernweg", href: "#roadmap" },
+  { label: "Projekte", href: "#projekte" },
   { label: "Materialien", href: "#materialien" },
-  { label: "Lehrpläne", href: "#lehrplaene" },
-  { label: "Lernvideos", href: "#lernvideos" },
+  { label: "Für Eltern", href: "#eltern" },
   { label: "Kontakt", href: "#kontakt" },
 ]
 

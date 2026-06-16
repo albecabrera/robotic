@@ -1,6 +1,5 @@
 import React from "react"
 import { GlowingButton } from "@/components/ui/glowing-button"
-import { MaterialCard } from "@/components/ui/material-card"
 import { Navbar1 } from "@/components/ui/navbar-1"
 import RainingLetters from "@/components/ui/modern-animated-hero-section"
 import OrbitingSkills from "@/components/ui/orbiting-skills-no-ssr"
@@ -9,7 +8,10 @@ import { SplineSceneBasic } from "@/components/blocks/spline-hero"
 import { VerticalTabs } from "@/components/ui/vertical-tabs"
 import { Testimonials } from "@/components/ui/testimonials-columns-1"
 import Footer4Col from "@/components/ui/footer-column"
-import NotesPlanning from "@/components/ui/notes-planning"
+import LearningRoadmap from "@/components/ui/learning-roadmap"
+import ProjectShowcase from "@/components/ui/project-showcase"
+import ElternSection from "@/components/ui/eltern-section"
+import MaterialFilter from "@/components/ui/material-filter"
 import { SiScratch, SiPython, SiHtml5 } from "react-icons/si"
 import { Coffee } from "lucide-react"
 import type { IconType } from "react-icons"
@@ -42,23 +44,6 @@ const programmingTools: ToolEntry[] = [
   { name: "Java",               level: "EF–Q2",     tag: "OOP",                 href: "https://www.java.com/",                        Icon: Coffee,                color: "#f97316" },
 ]
 
-const materials = [
-  {
-    title: "Grundlagen",
-    items: "Algorithmen, Variablen, Bedingungen, Schleifen",
-    level: "Jg. 8–10",
-  },
-  {
-    title: "Aufgaben & Arbeitsblätter",
-    items: "Übungen, Musterlösungen, Checklisten",
-    level: "alle Kurse",
-  },
-  {
-    title: "Oberstufe",
-    items: "Datenbanken, Webentwicklung, KI, Projektarbeit",
-    level: "EF–Q2",
-  },
-]
 
 const curricula = [
   {
@@ -132,9 +117,13 @@ export default function Home() {
         </div>
       </section>
 
+      <LearningRoadmap />
+
       <section id="kurse">
         <VerticalTabs />
       </section>
+
+      <ProjectShowcase />
 
       <section id="materialien" className="section-shell section-gap">
         <div className="mx-auto max-w-screen-xl">
@@ -147,10 +136,8 @@ export default function Home() {
               Nutze die Materialien zum Nacharbeiten, Üben und Vorbereiten. Jede Einheit enthält Lernziele, Aufgaben und Hinweise zur Abgabe.
             </p>
           </div>
-          <div className="mt-8 grid gap-4 md:grid-cols-3">
-            {materials.map((material) => (
-              <MaterialCard key={material.title} {...material} />
-            ))}
+          <div className="mt-8">
+            <MaterialFilter />
           </div>
           <div className="mt-10 flex justify-center">
             <GlowingButton href="#kontakt" glowColor="#3b82f6">
@@ -199,6 +186,8 @@ export default function Home() {
         </GlowingButton>
       </div>
 
+      <ElternSection />
+
       <section id="informatiker" className="section-shell section-gap">
         <div className="mb-10 text-center">
           <p className="eyebrow">Pioniere der Informatik</p>
@@ -211,10 +200,6 @@ export default function Home() {
       </section>
 
       <Testimonials />
-
-      <section id="planung">
-        <NotesPlanning />
-      </section>
 
       <section id="kontakt">
         <Footer4Col />
