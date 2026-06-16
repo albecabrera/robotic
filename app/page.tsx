@@ -24,21 +24,22 @@ type ToolEntry = {
   name: string
   level: string
   tag: string
+  href: string
   Icon?: IconType | LucideIcon
   imgSrc?: string
   color: string
 }
 
 const programmingTools: ToolEntry[] = [
-  { name: "Cubi",               level: "Kl. 5–7",  tag: "Blockprogrammierung", imgSrc: cubiImg.src,         color: "#3b82f6" },
-  { name: "Scratch",            level: "Kl. 5–7",  tag: "Blockprogrammierung", Icon: SiScratch,             color: "#ff8c1a" },
-  { name: "App Inventor",       level: "WP",        tag: "App-Entwicklung",     imgSrc: appInventorImg.src,  color: "#22c55e" },
-  { name: "Calliope / Callibot",level: "WP",        tag: "Physical Computing",  imgSrc: calliopeImg.src,     color: "#a855f7" },
-  { name: "XLogo",              level: "WP",        tag: "Turtle-Grafik",       imgSrc: xlogoImg.src,        color: "#2ecc71" },
-  { name: "TigerJython",        level: "WP",        tag: "Python-Einführung",   imgSrc: tigerjythonImg.src,  color: "#fbbf24" },
-  { name: "HTML & CSS",         level: "WP 9/10",   tag: "Webentwicklung",      Icon: SiHtml5,               color: "#ef4444" },
-  { name: "Python",             level: "Kl. 9+",    tag: "Skriptsprache",       Icon: SiPython,              color: "#3b82f6" },
-  { name: "Java",               level: "EF–Q2",     tag: "OOP",                 Icon: Coffee,                color: "#f97316" },
+  { name: "Cubi",               level: "Kl. 5–7",  tag: "Blockprogrammierung", href: "https://it-for-kids.org/cubi/",                imgSrc: cubiImg.src,         color: "#3b82f6" },
+  { name: "Scratch",            level: "Kl. 5–7",  tag: "Blockprogrammierung", href: "https://scratch.mit.edu/",                     Icon: SiScratch,             color: "#ff8c1a" },
+  { name: "App Inventor",       level: "WP",        tag: "App-Entwicklung",     href: "https://appinventor.mit.edu/",                 imgSrc: appInventorImg.src,  color: "#22c55e" },
+  { name: "Calliope / Callibot",level: "WP",        tag: "Physical Computing",  href: "https://calliope.cc/",                         imgSrc: calliopeImg.src,     color: "#a855f7" },
+  { name: "XLogo",              level: "WP",        tag: "Turtle-Grafik",       href: "https://xlogo.inf.ethz.ch/release/latest/#/",  imgSrc: xlogoImg.src,        color: "#2ecc71" },
+  { name: "TigerJython",        level: "WP",        tag: "Python-Einführung",   href: "https://tigerjython.ch/",                      imgSrc: tigerjythonImg.src,  color: "#fbbf24" },
+  { name: "HTML & CSS",         level: "WP 9/10",   tag: "Webentwicklung",      href: "https://developer.mozilla.org/en-US/docs/Web/HTML", Icon: SiHtml5,          color: "#ef4444" },
+  { name: "Python",             level: "Kl. 9+",    tag: "Skriptsprache",       href: "https://www.python.org/",                      Icon: SiPython,              color: "#3b82f6" },
+  { name: "Java",               level: "EF–Q2",     tag: "OOP",                 href: "https://www.java.com/",                        Icon: Coffee,                color: "#f97316" },
 ]
 
 const materials = [
@@ -107,14 +108,21 @@ export default function Home() {
               {programmingTools.map((tool) => {
                 const Icon = tool.Icon as React.ElementType | undefined
                 return (
-                  <li key={tool.name} className="flex flex-col gap-2 rounded-xl border bg-card p-3 shadow-sm">
-                    {tool.imgSrc ? (
-                      <img src={tool.imgSrc} alt={tool.name} className="h-6 w-6 shrink-0 rounded object-contain" />
-                    ) : Icon ? (
-                      <Icon className="h-6 w-6 shrink-0" style={{ color: tool.color }} />
-                    ) : null}
-                    <span className="text-xs font-semibold text-foreground leading-tight">{tool.name}</span>
-                    <span className="text-[10px] text-muted-foreground">{tool.level}</span>
+                  <li key={tool.name}>
+                    <a
+                      href={tool.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="flex flex-col gap-2 rounded-xl border bg-card p-3 shadow-sm transition-colors hover:border-primary/50 hover:bg-card/80"
+                    >
+                      {tool.imgSrc ? (
+                        <img src={tool.imgSrc} alt={tool.name} className="h-6 w-6 shrink-0 rounded object-contain" />
+                      ) : Icon ? (
+                        <Icon className="h-6 w-6 shrink-0" style={{ color: tool.color }} />
+                      ) : null}
+                      <span className="text-xs font-semibold text-foreground leading-tight">{tool.name}</span>
+                      <span className="text-[10px] text-muted-foreground">{tool.level}</span>
+                    </a>
                   </li>
                 )
               })}
