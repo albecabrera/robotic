@@ -3,8 +3,11 @@ import React, { useEffect, useState, memo } from 'react'
 import scratchImg from '@/app/img/scratch.png'
 import xlogoImg from '@/app/img/xlogo.png'
 import tigerjythonImg from '@/app/img/TigerJython.jpg'
+import cubiImg from '@/app/img/cubi.png'
+import appInventorImg from '@/app/img/appinventor.jpeg'
+import calliopeImg from '@/app/img/calliope.jpeg'
 
-type IconType = 'scratch' | 'xlogo' | 'tigerjython' | 'html' | 'css' | 'python' | 'java'
+type IconType = 'scratch' | 'xlogo' | 'tigerjython' | 'html' | 'css' | 'python' | 'java' | 'cubi' | 'appinventor' | 'calliope'
 type GlowColor = 'cyan' | 'purple' | 'orange'
 
 interface SkillIconProps { type: IconType }
@@ -38,6 +41,24 @@ const iconComponents: Record<IconType, { component: () => React.JSX.Element; col
     color: '#F39C12',
     component: () => (
       <img src={tigerjythonImg.src} alt="TigerJython" className="w-full h-full object-contain rounded-full" />
+    ),
+  },
+  cubi: {
+    color: '#3B82F6',
+    component: () => (
+      <img src={cubiImg.src} alt="Cubi" className="w-full h-full object-contain rounded-full" />
+    ),
+  },
+  appinventor: {
+    color: '#22c55e',
+    component: () => (
+      <img src={appInventorImg.src} alt="App Inventor" className="w-full h-full object-contain rounded-full" />
+    ),
+  },
+  calliope: {
+    color: '#a855f7',
+    component: () => (
+      <img src={calliopeImg.src} alt="Calliope" className="w-full h-full object-contain rounded-full" />
     ),
   },
   html: {
@@ -86,6 +107,10 @@ const skillsConfig: SkillConfig[] = [
   { id: 'scratch',     orbitRadius: 100, size: 44, speed: 0.8,  iconType: 'scratch',     phaseShift: 0,                    glowColor: 'orange', label: 'Scratch' },
   { id: 'xlogo',       orbitRadius: 100, size: 44, speed: 0.8,  iconType: 'xlogo',       phaseShift: (2 * Math.PI) / 3,    glowColor: 'orange', label: 'XLogo' },
   { id: 'tigerjython', orbitRadius: 100, size: 44, speed: 0.8,  iconType: 'tigerjython', phaseShift: (4 * Math.PI) / 3,    glowColor: 'orange', label: 'Tigerjython' },
+  // Middle orbit — WP tools
+  { id: 'cubi',        orbitRadius: 145, size: 44, speed: -0.6, iconType: 'cubi',        phaseShift: 0,                    glowColor: 'purple', label: 'Cubi' },
+  { id: 'appinventor', orbitRadius: 145, size: 44, speed: -0.6, iconType: 'appinventor', phaseShift: (2 * Math.PI) / 3,    glowColor: 'purple', label: 'App Inventor' },
+  { id: 'calliope',    orbitRadius: 145, size: 44, speed: -0.6, iconType: 'calliope',    phaseShift: (4 * Math.PI) / 3,    glowColor: 'purple', label: 'Calliope' },
   // Outer orbit — Textbasiert
   { id: 'html',   orbitRadius: 185, size: 46, speed: -0.5, iconType: 'html',   phaseShift: 0,                    glowColor: 'cyan',   label: 'HTML5' },
   { id: 'css',    orbitRadius: 185, size: 46, speed: -0.5, iconType: 'css',    phaseShift: Math.PI / 2,          glowColor: 'cyan',   label: 'CSS3' },
@@ -168,6 +193,7 @@ export default function OrbitingSkills() {
       >
         {/* Orbit paths */}
         <GlowingOrbitPath radius={100} glowColor="orange" animationDelay={0} />
+        <GlowingOrbitPath radius={145} glowColor="purple" animationDelay={0.75} />
         <GlowingOrbitPath radius={185} glowColor="cyan" animationDelay={1.5} />
 
         {/* Center icon */}

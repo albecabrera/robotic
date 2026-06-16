@@ -11,28 +11,34 @@ import { Testimonials } from "@/components/ui/testimonials-columns-1"
 import Footer4Col from "@/components/ui/footer-column"
 import NotesPlanning from "@/components/ui/notes-planning"
 import { SiScratch, SiPython, SiHtml5 } from "react-icons/si"
-import { LayoutGrid, Smartphone, Cpu, Triangle, Code2, Coffee } from "lucide-react"
+import { Coffee } from "lucide-react"
 import type { IconType } from "react-icons"
 import type { LucideIcon } from "lucide-react"
+import cubiImg from "@/app/img/cubi.png"
+import appInventorImg from "@/app/img/appinventor.jpeg"
+import calliopeImg from "@/app/img/calliope.jpeg"
+import xlogoImg from "@/app/img/xlogo.png"
+import tigerjythonImg from "@/app/img/TigerJython.jpg"
 
 type ToolEntry = {
   name: string
   level: string
   tag: string
-  Icon: IconType | LucideIcon
+  Icon?: IconType | LucideIcon
+  imgSrc?: string
   color: string
 }
 
 const programmingTools: ToolEntry[] = [
-  { name: "Cubi",              level: "Kl. 5–7",  tag: "Blockprogrammierung",  Icon: LayoutGrid, color: "#f97316" },
-  { name: "Scratch",           level: "Kl. 5–7",  tag: "Blockprogrammierung",  Icon: SiScratch,  color: "#ff8c1a" },
-  { name: "App Inventor",      level: "Kl. 7–10", tag: "App-Entwicklung",      Icon: Smartphone, color: "#22c55e" },
-  { name: "Calliope / Callibot", level: "WP",    tag: "Physical Computing",   Icon: Cpu,        color: "#a855f7" },
-  { name: "XLogo",             level: "Kl. 6–7",  tag: "Turtle-Grafik",        Icon: Triangle,   color: "#3b82f6" },
-  { name: "TigerJython",       level: "Kl. 8+",   tag: "Python-Einführung",    Icon: Code2,      color: "#fbbf24" },
-  { name: "HTML & CSS",        level: "Kl. 8+",   tag: "Webentwicklung",       Icon: SiHtml5,    color: "#ef4444" },
-  { name: "Python",            level: "Kl. 9+",   tag: "Skriptsprache",        Icon: SiPython,   color: "#3b82f6" },
-  { name: "Java",              level: "EF–Q2",    tag: "OOP",                  Icon: Coffee,     color: "#f97316" },
+  { name: "Cubi",               level: "Kl. 5–7",  tag: "Blockprogrammierung", imgSrc: cubiImg.src,         color: "#3b82f6" },
+  { name: "Scratch",            level: "Kl. 5–7",  tag: "Blockprogrammierung", Icon: SiScratch,             color: "#ff8c1a" },
+  { name: "App Inventor",       level: "WP",        tag: "App-Entwicklung",     imgSrc: appInventorImg.src,  color: "#22c55e" },
+  { name: "Calliope / Callibot",level: "WP",        tag: "Physical Computing",  imgSrc: calliopeImg.src,     color: "#a855f7" },
+  { name: "XLogo",              level: "WP",        tag: "Turtle-Grafik",       imgSrc: xlogoImg.src,        color: "#2ecc71" },
+  { name: "TigerJython",        level: "WP",        tag: "Python-Einführung",   imgSrc: tigerjythonImg.src,  color: "#fbbf24" },
+  { name: "HTML & CSS",         level: "WP 9/10",   tag: "Webentwicklung",      Icon: SiHtml5,               color: "#ef4444" },
+  { name: "Python",             level: "Kl. 9+",    tag: "Skriptsprache",       Icon: SiPython,              color: "#3b82f6" },
+  { name: "Java",               level: "EF–Q2",     tag: "OOP",                 Icon: Coffee,                color: "#f97316" },
 ]
 
 const materials = [
@@ -99,10 +105,14 @@ export default function Home() {
             </p>
             <ul className="mt-6 grid grid-cols-3 gap-2">
               {programmingTools.map((tool) => {
-                const Icon = tool.Icon as React.ElementType
+                const Icon = tool.Icon as React.ElementType | undefined
                 return (
                   <li key={tool.name} className="flex flex-col gap-2 rounded-xl border bg-card p-3 shadow-sm">
-                    <Icon className="h-6 w-6 shrink-0" style={{ color: tool.color }} />
+                    {tool.imgSrc ? (
+                      <img src={tool.imgSrc} alt={tool.name} className="h-6 w-6 shrink-0 rounded object-contain" />
+                    ) : Icon ? (
+                      <Icon className="h-6 w-6 shrink-0" style={{ color: tool.color }} />
+                    ) : null}
                     <span className="text-xs font-semibold text-foreground leading-tight">{tool.name}</span>
                     <span className="text-[10px] text-muted-foreground">{tool.level}</span>
                   </li>
