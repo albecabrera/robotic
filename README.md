@@ -2,104 +2,137 @@
 
 Portal de Informatik para la **Elisabeth-Selbert-Gesamtschule Bonn**. Página única (one-page) con materiales de clase, planes de estudio internos (Lehrpläne), proyectos y videos de aprendizaje para el curso de Informatik del Sr. Cabrera.
 
-**Local dev**: [http://localhost:3000](http://localhost:3000)
+**Dev**: [http://localhost:3000](http://localhost:3000) · **XAMPP**: [http://localhost/robotic/](http://localhost/robotic/)
 
-## Stack tecnológico
+## Stack
 
 | Tecnología | Versión | Uso |
 |---|---|---|
-| [Next.js](https://nextjs.org) | 16.x | Framework (App Router + Turbopack) |
+| [Next.js](https://nextjs.org) | 16.x | Framework (App Router + Turbopack, static export) |
 | [React](https://react.dev) | 19.x | UI |
 | [TypeScript](https://www.typescriptlang.org) | 6.x | Tipado estático |
-| [Tailwind CSS](https://tailwindcss.com) | 4.x | Estilos (vía `@tailwindcss/postcss`) |
-| [motion / framer-motion](https://motion.dev) | 12.x | Animaciones (marquees, reveals, spotlight) |
-| [Spline](https://spline.design) (`@splinetool/react-spline` + `runtime`) | 4.x / 1.x | Escena 3D del robot en el hero (WebGL) |
+| [Tailwind CSS](https://tailwindcss.com) | 4.x | Estilos (`@tailwindcss/postcss`) |
+| [framer-motion](https://motion.dev) | 12.x | Animaciones (springs, reveals, carrusel, contadores) |
+| [Spline](https://spline.design) | 4.x / 1.x | Escena 3D del robot en el hero (WebGL) |
 | [Radix UI](https://www.radix-ui.com) | — | Primitivas accesibles (`accordion`, `tabs`, `slot`) |
-| [next-themes](https://github.com/pacocoursey/next-themes) | 0.4 | Tema — forzado a **dark only** |
+| [next-themes](https://github.com/pacocoursey/next-themes) | 0.4 | Tema forzado a **dark only** |
 | [lucide-react](https://lucide.dev) | 1.x | Íconos |
-| `class-variance-authority`, `clsx`, `tailwind-merge` | — | Composición de clases (helper `cn()` en `lib/utils.ts`) |
+| `react-icons` | — | Logos de lenguajes (SiScratch, SiPython, SiHtml5) |
+| `class-variance-authority`, `clsx`, `tailwind-merge` | — | Composición de clases (`cn()`) |
 | `dotted-map` | 3.x | Mapa de puntos (`world-map.tsx`) |
 | `tw-animate-css` | 1.x | Utilidades de animación CSS |
 
 ## Comandos
 
 ```bash
-npm install      # instalar dependencias
-npm run dev      # servidor de desarrollo → http://localhost:3000
-npm run build    # build de producción
-npm run start    # servir build de producción
-npm run lint     # ESLint (eslint-config-next)
+npm install            # instalar dependencias
+npm run dev            # dev server → http://localhost:3000 (mata el puerto previo automáticamente)
+npm run build          # build de producción estándar
+npm run build:xampp    # build con BASE_PATH=/robotic para XAMPP
+npm run deploy:xampp   # build:xampp + copia a /Users/acabrera/xampp-data/htdocs/robotic
+npm run lint           # ESLint
 ```
 
-Requisitos: **Node.js 20+** y un browser con **WebGL habilitado** (ver Troubleshooting).
+Requisitos: **Node.js 20+**, browser con **WebGL habilitado** (ver Troubleshooting).
 
 ## Estructura del proyecto
 
 ```
 app/
-  layout.tsx        # Root layout: fuentes (Inter + Space Grotesk), dark mode forzado,
-                    # preconnect/preload de la escena Spline
-  page.tsx          # Página única con todas las secciones
+  layout.tsx        # Root layout: fuentes, dark mode, preconnect Spline, Open Graph/Twitter meta
+  page.tsx          # Página única — todas las secciones
   globals.css       # Tailwind 4, design tokens, clases utilitarias (section-shell, heading-2…)
-  img/              # Logos de Scratch, XLogo, TigerJython
+  img/              # Logos de herramientas (Cubi, XLogo, TigerJython, App Inventor, Calliope)
 components/
   blocks/
-    spline-hero.tsx                 # Hero: card con Spotlight + texto + robot 3D
-  ui/                               # Componentes de UI (one component per file)
-    splite.tsx                      # Wrapper de Spline: Suspense + ErrorBoundary con fallback
-    orbiting-skills.tsx             # Órbitas animadas de lenguajes (rAF, client-only)
-    orbiting-skills-no-ssr.tsx      # Wrapper client con dynamic(ssr:false) — evita hydration error
-    orbiting-carousel-*.tsx         # Carrusel de pioneros de la informática
-    modern-animated-hero-section.tsx # Sección "RainingLetters" (lluvia de caracteres)
-    vertical-tabs.tsx               # Tabs de cursos
-    testimonials-columns-1.tsx      # Carrusel horizontal de Lernvideos
-    navbar-1.tsx / footer-column.tsx # Navegación y footer
-    …                               # Cards, botones glow, marquee, timeline, etc.
+    spline-hero.tsx              # Hero: Spotlight + texto + robot 3D con ErrorBoundary
+  ui/
+    programming-tools-grid.tsx   # Grid animado de herramientas (stagger + hover spring)
+    learning-roadmap.tsx         # Roadmap Kl.5→Abitur con contadores animados en los números
+    project-showcase.tsx         # Tarjetas de proyectos de alumnos (hover glow + emoji wobble)
+    curricula-cards.tsx          # Tarjetas de Lehrpläne con botón de descarga
+    material-card.tsx            # Tarjeta de materiales (spring hover)
+    material-filter.tsx          # Filtro de materiales por nivel
+    eltern-section.tsx           # Sección para padres (3 tarjetas animadas)
+    orbiting-skills.tsx          # Órbitas de lenguajes (rAF, client-only)
+    orbiting-skills-no-ssr.tsx   # Wrapper dynamic(ssr:false) con skeleton de carga
+    orbiting-carousel-*.tsx      # Carrusel de pioneros de la informática
+    modern-animated-hero-section.tsx  # RainingLetters: lluvia de caracteres (100 nodos, RAF)
+    vertical-tabs.tsx            # Tabs de cursos con auto-play e imágenes
+    testimonials-columns-1.tsx   # Carrusel horizontal de Lernvideos
+    navbar-1.tsx                 # Navegación con scroll-spy
+    footer-column.tsx            # Footer 4 columnas
+    …                            # glowing-button, shimmer-button, spotlight, timeline, etc.
+public/
+  docs/
+    lehrplan-7-8.pdf             # Lehrplan interno Jahrgänge 7/8
+    lehrplan-9-10.docx           # Lehrplan interno Jahrgänge 9/10
 lib/
   utils.ts          # cn() — clsx + tailwind-merge
 ```
 
-## Secciones de la página (`app/page.tsx`)
+## Secciones (`app/page.tsx`)
 
-| Anchor | Sección |
+| Anchor | Contenido |
 |---|---|
-| `#inicio` | Hero con robot 3D (Spline) y CTAs |
-| `#welcome` | Animación RainingLetters |
-| `#programmieren` | Lenguajes: Scratch, XLogo, TigerJython, HTML/CSS, Python, Java (órbitas) |
-| `#kurse` | Tabs de cursos |
-| `#materialien` | Materiales por tema y nivel (Jg. 8–10, Oberstufe) |
-| `#lehrplaene` | Lehrpläne internos: Jahrgänge 5/6, 7/8, 9/10 |
+| `#inicio` | Hero: robot 3D (Spline) + CTAs |
+| `#welcome` | RainingLetters — lluvia de caracteres con typewriter |
+| `#programmieren` | Herramientas: Cubi, Scratch, App Inventor, XLogo, TigerJython, HTML/CSS, Python, Java |
+| `#roadmap` | Von Klasse 5 bis zum Abitur — roadmap con contadores animados |
+| `#kurse` | Tabs de cursos con imágenes |
+| `#projekte` | Proyectos de alumnos |
+| `#materialien` | Materiales filtrados por nivel (Kl. 5–7, 7–10, EF–Q2) |
+| `#lehrplaene` | Lehrpläne internos con descarga de PDF/Word para Jg. 7/8 y 9/10 |
+| `#eltern` | Sección para padres |
 | `#informatiker` | Carrusel de pioneros de la informática |
-| `#kontakt` | Footer con contacto |
+| `#lernvideos` | Carrusel de Lernvideos |
+| `#kontakt` | Footer con contacto (cabrera@esg-bonn.de) |
 
-## Decisiones técnicas y performance
+## Animaciones
 
-- **Dark mode only**: `html.dark` fijo + `next-themes` con `forcedTheme="dark"` y `enableSystem={false}` (`app/layout.tsx`). El `colorScheme`/`themeColor` del viewport también están en dark.
-- **Carga rápida de la escena 3D**: en `layout.tsx` hay `preconnect` a `prod.spline.design` y `preload` del archivo `scene.splinecode` (~1.35 MB) — la descarga arranca con el HTML, en paralelo con el JS. En `splite.tsx` el runtime de Spline se importa a nivel de módulo (no lazy-on-render).
-- **Componentes client-only**: `OrbitingSkills` calcula posiciones con `Math.sin/cos` por frame — se renderiza solo en cliente vía `orbiting-skills-no-ssr.tsx` (`dynamic` + `ssr: false` dentro de un Client Component, porque `ssr: false` no está permitido en Server Components).
-- **Resiliencia WebGL**: `splite.tsx` envuelve Spline en un `ErrorBoundary`; si el browser no puede crear contexto WebGL, se muestra un fallback SVG en vez de romper la página.
-- **Guard de división por cero**: `hover-footer.tsx` ignora eventos de mouse cuando el SVG todavía mide 0×0 (evitaba `NaN%` en `radialGradient`).
+Todos los componentes con tarjetas siguen el mismo patrón:
+
+- **Entrada**: `opacity 0→1` + `y 28→0` + `scale 0.92→1` con spring (stiffness 260, damping 22), escalonado por índice
+- **Hover**: `scale 1.04`, `y -6`, `boxShadow` en el color del elemento, `borderColor` suavizado, glow radial detrás
+- **Tap**: `scale 0.97`
+- **prefers-reduced-motion**: los loops de RAF y los carruseles se detienen si el sistema lo pide
+
+Componentes animados: `ProgrammingToolsGrid`, `ProjectShowcase`, `ElternSection`, `MaterialCard`, `CurriculaCards`, `LearningRoadmap` (contadores), `Testimonials` (carrusel pausable).
+
+## Deploy a XAMPP
+
+```bash
+npm run deploy:xampp
+```
+
+Construye con `BASE_PATH=/robotic` y copia `out/` a `/Users/acabrera/xampp-data/htdocs/robotic`. Los documentos PDF/Word en `public/docs/` quedan accesibles en `localhost/robotic/docs/`.
+
+> El directorio `out/` está en `.gitignore` — nunca se commitea el build.
+
+## Decisiones técnicas
+
+- **Dark mode only**: `html.dark` fijo + `forcedTheme="dark"` + `enableSystem={false}` en `next-themes`.
+- **Carga rápida del robot**: `preconnect` + `preload` de `scene.splinecode` (~1.35 MB) en `layout.tsx` — la descarga arranca con el HTML en paralelo con el JS.
+- **Client-only con skeleton**: `OrbitingSkills` usa `dynamic(ssr:false)` con `loading` prop — sin huecos en blanco durante la hydration.
+- **Resiliencia WebGL**: `ErrorBoundary` en `splite.tsx` — si el browser no crea contexto WebGL, muestra un fallback SVG sin romper la página.
+- **Open Graph**: `metadataBase` + `openGraph` + `twitter` en `layout.tsx` — links compartidos generan preview en redes y mensajería.
+- **Puerto fijo**: `npm run dev` mata el proceso en `:3000` antes de arrancar — siempre mismo puerto.
 
 ## Troubleshooting
 
-### El robot 3D no aparece / error `THREE.WebGLRenderer: A WebGL context could not be created`
+### Robot 3D no aparece / error WebGL
 
-Mensaje típico en consola: `GL_VENDOR = Disabled, GL_RENDERER = Disabled, Sandboxed = yes`.
+Mensaje típico: `GL_VENDOR = Disabled, Sandboxed = yes`.
 
-**Causa**: WebGL está deshabilitado en el browser — casi siempre por la aceleración por hardware desactivada en Chrome. No es un bug de la app.
+**Causa**: aceleración por hardware desactivada en Chrome — no es un bug de la app.
 
 **Solución (Chrome)**:
-1. Abrir `chrome://settings/system`
-2. Activar **"Use graphics acceleration when available"** (Grafikbeschleunigung verwenden)
-3. Relanzar Chrome
-4. Verificar en `chrome://gpu` que *WebGL* figure como **Hardware accelerated**
+1. `chrome://settings/system` → activar "Use graphics acceleration when available"
+2. Relanzar Chrome
+3. Verificar en `chrome://gpu` que WebGL figure como **Hardware accelerated**
 
-Si WebGL sigue deshabilitado (GPU en blocklist, VM, escritorio remoto), la página sigue funcionando: el `ErrorBoundary` muestra un gráfico estático en lugar del robot.
-
-### El robot tarda en aparecer
-
-Normal en `npm run dev`: el runtime de Spline se sirve sin minificar (~7 s). En producción (`npm run build && npm run start`) es notablemente más rápido y queda cacheado en visitas siguientes.
+Si WebGL sigue deshabilitado (VM, escritorio remoto, GPU en blocklist), el `ErrorBoundary` muestra un gráfico estático.
 
 ### Hydration error en componentes animados
 
-Los componentes con valores calculados por frame deben ser client-only. Patrón usado: wrapper `"use client"` con `dynamic(() => import('./x'), { ssr: false })` — ver `orbiting-skills-no-ssr.tsx`.
+Los componentes con valores calculados por frame deben ser client-only. Patrón: wrapper `"use client"` con `dynamic(() => import('./x'), { ssr: false, loading: () => <Skeleton /> })`.
