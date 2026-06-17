@@ -12,7 +12,7 @@ type Plan = {
   docLabel?: string
 }
 
-const COLORS = ["#a855f7", "#3b82f6", "#22c55e"]
+const COLORS = ["#a855f7", "#3b82f6", "#22c55e", "#f97316", "#ef4444", "#fbbf24"]
 
 function CurriculaCard({ plan, index }: { plan: Plan; index: number }) {
   const ref = useRef(null)

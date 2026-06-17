@@ -54,12 +54,12 @@ export default function Footer4Col() {
               <span className="text-[#3ca2fa] text-3xl font-extrabold">&lt;/&gt;</span>
               <span className="text-white text-xl font-bold">ESG Informatik</span>
             </div>
-            <p className="text-sm leading-relaxed text-gray-400">
+            <p className="text-sm leading-relaxed text-muted-foreground">
               Materialien, Aufgaben, Projekte und Lernvideos für den Informatikunterricht bei Herrn Cabrera an der Elisabeth-Selbert-Gesamtschule Bonn.
             </p>
             <div className="flex gap-4 pt-2">
               {socialLinks.map(({ icon: Icon, label, href }) => (
-                <a key={label} href={href} aria-label={label} className="text-gray-400 hover:text-[#3ca2fa] transition-colors">
+                <a key={label} href={href} aria-label={label} className="text-muted-foreground hover:text-[#3ca2fa] transition-colors">
                   <Icon size={20} />
                 </a>
               ))}
@@ -73,7 +73,7 @@ export default function Footer4Col() {
               <ul className="space-y-3">
                 {section.links.map((link) => (
                   <li key={link.label} className="relative">
-                    <a href={link.href} className="text-sm text-gray-400 hover:text-[#3ca2fa] transition-colors flex items-center gap-2">
+                    <a href={link.href} className="text-sm text-muted-foreground hover:text-[#3ca2fa] transition-colors flex items-center gap-2">
                       {link.label}
                       {"pulse" in link && link.pulse && (
                         <span className="relative flex size-2">
@@ -94,7 +94,7 @@ export default function Footer4Col() {
         <div className="flex flex-col md:flex-row justify-between items-center text-sm gap-4">
           <div className="flex flex-col sm:flex-row gap-4">
             {contactInfo.map(({ icon: Icon, text, href }) => (
-              <div key={text} className="flex items-center gap-2 text-gray-400">
+              <div key={text} className="flex items-center gap-2 text-muted-foreground">
                 <Icon size={15} className="text-[#3ca2fa] shrink-0" />
                 {href
                   ? <a href={href} className="hover:text-[#3ca2fa] transition-colors">{text}</a>

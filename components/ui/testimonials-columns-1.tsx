@@ -1,7 +1,7 @@
 "use client"
 
-import React from "react"
-import { motion } from "motion/react"
+import React, { useEffect, useState } from "react"
+import { motion } from "framer-motion"
 
 type VideoCard = {
   text: string
@@ -23,11 +23,20 @@ const videos: VideoCard[] = [
 ]
 
 const VideoCarousel = ({ items, duration = 28 }: { items: VideoCard[]; duration?: number }) => {
+  const [reducedMotion, setReducedMotion] = useState(false)
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setReducedMotion(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
+  }, [])
+
   return (
     <div className="w-full overflow-hidden">
       <motion.div
-        animate={{ x: ["0%", "-50%"] }}
-        transition={{ duration, repeat: Infinity, ease: "linear" }}
+        animate={reducedMotion ? { x: "0%" } : { x: ["0%", "-50%"] }}
+        transition={reducedMotion ? {} : { duration, repeat: Infinity, ease: "linear" }}
         className="flex w-max gap-6 pb-4"
       >
         {[...items, ...items].map(({ text, image, name, role }, index) => (
@@ -37,7 +46,7 @@ const VideoCarousel = ({ items, duration = 28 }: { items: VideoCard[]; duration?
           >
             <p>{text}</p>
             <div className="mt-5 flex items-center gap-2">
-              <img width={40} height={40} src={image} alt="Video-Symbol" className="h-10 w-10 rounded-full" />
+              <img width={40} height={40} src={image} alt="Video-Symbol" loading="lazy" decoding="async" className="h-10 w-10 rounded-full" />
               <div className="flex flex-col">
                 <div className="font-medium leading-5 tracking-tight">{name}</div>
                 <div className="leading-5 tracking-tight opacity-60">{role}</div>

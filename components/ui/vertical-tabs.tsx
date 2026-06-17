@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect, useCallback } from "react";
-import { motion, AnimatePresence } from "motion/react";
+import { motion, AnimatePresence } from "framer-motion";
 import { cn } from "@/lib/utils";
 import { ArrowLeft, ArrowRight, Trash2, Plus, X, Check, Lock, Unlock } from "lucide-react";
 
@@ -312,6 +312,8 @@ export function VerticalTabs() {
                     <img
                       src={services[activeIndex]?.image}
                       alt={services[activeIndex]?.title}
+                      loading="lazy"
+                      decoding="async"
                       className="w-full h-full object-cover transition-transform duration-700 hover:scale-105"
                     />
                     <div className="absolute inset-x-0 bottom-0 h-1/3 bg-gradient-to-t from-black/20 via-transparent to-transparent opacity-60" />

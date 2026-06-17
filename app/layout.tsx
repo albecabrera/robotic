@@ -17,8 +17,26 @@ const spaceGrotesk = Space_Grotesk({
 });
 
 export const metadata: Metadata = {
-  title: "Informatik an der ESG",
-  description: "Informatik an der Elisabeth-Selbert-Gesamtschule Bonn",
+  metadataBase: new URL("https://albecabrera.github.io/robotic"),
+  title: {
+    default: "Informatik an der ESG",
+    template: "%s · ESG Informatik",
+  },
+  description: "Materialien, Projekte und Lernvideos für den Informatikunterricht bei Herrn Cabrera an der Elisabeth-Selbert-Gesamtschule Bonn.",
+  keywords: ["Informatik", "ESG Bonn", "Programmieren", "Schule", "Python", "Java", "Scratch"],
+  openGraph: {
+    type: "website",
+    locale: "de_DE",
+    siteName: "ESG Informatik",
+    title: "Informatik an der ESG Bonn",
+    description: "Materialien, Projekte und Lernvideos für den Informatikunterricht bei Herrn Cabrera an der Elisabeth-Selbert-Gesamtschule Bonn.",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: "Informatik an der ESG Bonn",
+    description: "Materialien, Projekte und Lernvideos für den Informatikunterricht bei Herrn Cabrera.",
+  },
+  robots: { index: false, follow: false },
 };
 
 export const viewport: Viewport = {

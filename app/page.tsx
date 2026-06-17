@@ -1,4 +1,3 @@
-import React from "react"
 import { GlowingButton } from "@/components/ui/glowing-button"
 import { Navbar1 } from "@/components/ui/navbar-1"
 import RainingLetters from "@/components/ui/modern-animated-hero-section"
@@ -100,7 +99,7 @@ export default function Home() {
         </div>
       </section>
 
-      <section id="lehrplaene" className="section-shell pb-4 sm:pb-8 lg:pb-12">
+      <section id="lehrplaene" className="section-shell section-gap">
         <div className="mx-auto max-w-screen-xl">
           <div className="mx-auto max-w-3xl text-center">
             <p className="eyebrow">Interne Lehrpläne</p>
@@ -116,8 +115,8 @@ export default function Home() {
       </section>
 
       <div className="section-shell pb-16 flex justify-center gap-4">
-        <GlowingButton href="#lehrplaene" glowColor="#a855f7">
-          Lehrpläne ansehen
+        <GlowingButton href="#eltern" glowColor="#a855f7">
+          Für Eltern
         </GlowingButton>
         <GlowingButton href="#kontakt" glowColor="#f97316">
           Kontakt aufnehmen

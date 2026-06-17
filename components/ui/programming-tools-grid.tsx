@@ -12,7 +12,7 @@ import calliopeImg from "@/app/img/calliope.jpeg"
 import xlogoImg from "@/app/img/xlogo.png"
 import tigerjythonImg from "@/app/img/TigerJython.jpg"
 
-export type ToolEntry = {
+type ToolEntry = {
   name: string
   level: string
   tag: string

@@ -1,37 +1,27 @@
 "use client"
 
 import type React from "react"
-import { useState, useEffect, useCallback } from "react"
-
-interface Character {
-  char: string
-  x: number
-  y: number
-  speed: number
-}
+import { useState, useEffect, useCallback, useMemo, useRef } from "react"
 
 const FULL_TEXT = "Willkommen im Informatikunterricht!\nViel Spaß beim logischen Denken und Programmieren!"
-const TYPING_SPEED = 40   // ms per character
-const PAUSE_AFTER = 3000  // ms before restarting
+const TYPING_SPEED = 40
+const PAUSE_AFTER = 3000
+const CHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()"
+const COUNT = 100
 
 const FullSentence: React.FC = () => {
   const [displayed, setDisplayed] = useState("")
 
   useEffect(() => {
     let timeout: ReturnType<typeof setTimeout>
-
     const type = (index: number) => {
       if (index <= FULL_TEXT.length) {
         setDisplayed(FULL_TEXT.slice(0, index))
         timeout = setTimeout(() => type(index + 1), TYPING_SPEED)
       } else {
-        timeout = setTimeout(() => {
-          setDisplayed("")
-          type(0)
-        }, PAUSE_AFTER)
+        timeout = setTimeout(() => { setDisplayed(""); type(0) }, PAUSE_AFTER)
       }
     }
-
     type(0)
     return () => clearTimeout(timeout)
   }, [])
@@ -44,61 +34,61 @@ const FullSentence: React.FC = () => {
   )
 }
 
+interface Character { char: string; x: number; y: number; speed: number }
+
 const RainingLetters: React.FC = () => {
+  const [reducedMotion, setReducedMotion] = useState(false)
   const [characters, setCharacters] = useState<Character[]>([])
   const [activeIndices, setActiveIndices] = useState<Set<number>>(new Set())
+  const rafRef = useRef<number>(0)
 
-  const createCharacters = useCallback(() => {
-    const allChars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?"
-    const newCharacters: Character[] = []
-    for (let i = 0; i < 300; i++) {
-      newCharacters.push({
-        char: allChars[Math.floor(Math.random() * allChars.length)],
-        x: Math.random() * 100,
-        y: Math.random() * 100,
-        speed: 0.1 + Math.random() * 0.3,
-      })
-    }
-    return newCharacters
+  useEffect(() => {
+    const mq = window.matchMedia("(prefers-reduced-motion: reduce)")
+    setReducedMotion(mq.matches)
+    const handler = (e: MediaQueryListEvent) => setReducedMotion(e.matches)
+    mq.addEventListener("change", handler)
+    return () => mq.removeEventListener("change", handler)
   }, [])
 
-  useEffect(() => {
-    setCharacters(createCharacters())
-  }, [createCharacters])
+  const initialChars = useMemo<Character[]>(() =>
+    Array.from({ length: COUNT }, () => ({
+      char: CHARS[Math.floor(Math.random() * CHARS.length)],
+      x: Math.random() * 100,
+      y: Math.random() * 100,
+      speed: 0.08 + Math.random() * 0.18,
+    })), [])
 
   useEffect(() => {
-    const flickerInterval = setInterval(() => {
-      const next = new Set<number>()
-      const count = Math.floor(Math.random() * 3) + 3
-      for (let i = 0; i < count; i++) {
-        next.add(Math.floor(Math.random() * characters.length))
-      }
-      setActiveIndices(next)
-    }, 50)
-    return () => clearInterval(flickerInterval)
-  }, [characters.length])
+    setCharacters(initialChars)
+  }, [initialChars])
 
+  // RAF loop for falling — only when motion is allowed
   useEffect(() => {
-    let id: number
+    if (reducedMotion) return
     const update = () => {
       setCharacters(prev =>
-        prev.map(char => ({
-          ...char,
-          y: char.y + char.speed,
-          ...(char.y >= 100 && {
-            y: -5,
-            x: Math.random() * 100,
-            char: "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789!@#$%^&*()_+-=[]{}|;:,.<>?"[
-              Math.floor(Math.random() * 65)
-            ],
-          }),
-        }))
+        prev.map(c => c.y >= 100
+          ? { ...c, y: -5, x: Math.random() * 100, char: CHARS[Math.floor(Math.random() * CHARS.length)] }
+          : { ...c, y: c.y + c.speed }
+        )
       )
-      id = requestAnimationFrame(update)
+      rafRef.current = requestAnimationFrame(update)
     }
-    id = requestAnimationFrame(update)
-    return () => cancelAnimationFrame(id)
-  }, [])
+    rafRef.current = requestAnimationFrame(update)
+    return () => cancelAnimationFrame(rafRef.current)
+  }, [reducedMotion])
+
+  // Flicker at 200ms (was 50ms — 4× less re-renders)
+  useEffect(() => {
+    if (reducedMotion) return
+    const id = setInterval(() => {
+      const next = new Set<number>()
+      const count = 2 + Math.floor(Math.random() * 3)
+      for (let i = 0; i < count; i++) next.add(Math.floor(Math.random() * COUNT))
+      setActiveIndices(next)
+    }, 200)
+    return () => clearInterval(id)
+  }, [reducedMotion])
 
   return (
     <div className="relative w-full h-[50vh] bg-black overflow-hidden">
@@ -106,21 +96,22 @@ const RainingLetters: React.FC = () => {
         <FullSentence />
       </div>
 
-      {characters.map((char, index) => (
+      {!reducedMotion && characters.map((char, index) => (
         <span
           key={index}
-          className={`absolute transition-colors duration-100 select-none ${
+          aria-hidden
+          className={`absolute select-none pointer-events-none ${
             activeIndices.has(index)
-              ? "text-[#00ff00] font-bold animate-pulse z-10"
+              ? "text-[#00ff00] font-bold z-10"
               : "text-slate-600 font-light"
           }`}
           style={{
             left: `${char.x}%`,
             top: `${char.y}%`,
-            transform: `translate(-50%, -50%)${activeIndices.has(index) ? ' scale(1.25)' : ''}`,
-            textShadow: activeIndices.has(index) ? '0 0 8px rgba(255,255,255,0.8)' : 'none',
+            transform: `translate(-50%, -50%)${activeIndices.has(index) ? " scale(1.25)" : ""}`,
+            textShadow: activeIndices.has(index) ? "0 0 8px rgba(255,255,255,0.8)" : "none",
             opacity: activeIndices.has(index) ? 1 : 0.4,
-            fontSize: '1.8rem',
+            fontSize: "1.8rem",
           }}
         >
           {char.char}
