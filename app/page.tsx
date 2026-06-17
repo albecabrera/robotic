@@ -26,11 +26,15 @@ const curricula = [
     level: "Jahrgänge 7/8",
     title: "Strukturen verstehen und anwenden",
     points: ["Grundlagen des Programmierens", "Daten, Tabellen und Auswertungen", "kleine Projekte mit Dokumentation"],
+    docHref: `${process.env.BASE_PATH ?? ""}/docs/lehrplan-7-8.pdf`,
+    docLabel: "Lehrplan 7/8 (PDF)",
   },
   {
     level: "Jahrgänge 9/10",
     title: "Informatik vertiefen und Projekte umsetzen",
     points: ["Webentwicklung, Datenbanken und KI-Grundlagen", "komplexere Projekte mit Abgabe", "Vorbereitung auf Oberstufe und Berufswelt"],
+    docHref: `${process.env.BASE_PATH ?? ""}/docs/lehrplan-9-10.docx`,
+    docLabel: "Lehrplan 9/10 (Word)",
   },
 ]
 

@@ -2,11 +2,14 @@
 
 import { useRef } from "react"
 import { motion, useInView } from "framer-motion"
+import { Download } from "lucide-react"
 
 type Plan = {
   level: string
   title: string
   points: string[]
+  docHref?: string
+  docLabel?: string
 }
 
 const COLORS = ["#a855f7", "#3b82f6", "#22c55e"]
@@ -29,7 +32,7 @@ function CurriculaCard({ plan, index }: { plan: Plan; index: number }) {
         borderColor: `${color}70`,
       }}
       whileTap={{ scale: 0.97 }}
-      className="relative rounded-2xl border bg-card p-6 shadow-sm overflow-hidden cursor-default"
+      className="relative flex flex-col rounded-2xl border bg-card p-6 shadow-sm overflow-hidden cursor-default"
     >
       <motion.span
         aria-hidden
@@ -51,6 +54,26 @@ function CurriculaCard({ plan, index }: { plan: Plan; index: number }) {
           </li>
         ))}
       </ul>
+
+      {plan.docHref && (
+        <motion.a
+          href={plan.docHref}
+          download
+          className="relative z-10 mt-5 inline-flex items-center gap-2 self-start rounded-lg border px-3 py-1.5 text-xs font-semibold transition-colors"
+          style={{ borderColor: `${color}50`, color }}
+          whileHover={{
+            scale: 1.06,
+            backgroundColor: `${color}15`,
+            borderColor: color,
+          }}
+          whileTap={{ scale: 0.96 }}
+          transition={{ duration: 0.15 }}
+          onClick={(e) => e.stopPropagation()}
+        >
+          <Download className="h-3.5 w-3.5" />
+          {plan.docLabel ?? "Lehrplan herunterladen"}
+        </motion.a>
+      )}
     </motion.article>
   )
 }
