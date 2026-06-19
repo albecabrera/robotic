@@ -122,7 +122,7 @@ El sistema de tipos vive en `app/globals.css` (`@layer utilities`) y es **fluido
 | `.eyebrow` | `text-xs` | Etiqueta superior en mayúsculas |
 
 - **`text-balance` / `text-pretty`**: los headings usan `text-balance` (reparte líneas parejas, evita huérfanas) y los `.lead` usan `text-pretty`.
-- **Ritmo vertical fluido**: `.section-gap` usa `padding-block: clamp(3.5rem, 2rem + 6vw, 7rem)` — todas las secciones comparten el mismo espaciado proporcional.
+- **Ritmo vertical fluido**: `.section-gap` usa `padding-block: clamp(2.5rem, 1.75rem + 3vw, 4.5rem)` — todas las secciones comparten el mismo espaciado proporcional, ajustado para que el padding superior+inferior de secciones contiguas no deje un hueco excesivo.
 - **Consistencia**: cada sección usa `.section-shell` (ancho máximo + padding lateral) + `.section-gap`; los títulos usan `.heading-2`/`.lead` en vez de tamaños hardcodeados.
 
 ## Decisiones técnicas

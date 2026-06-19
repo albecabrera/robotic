@@ -189,8 +189,9 @@ section[id], main[id] {
 
 @layer utilities {
   .section-shell { @apply mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8 2xl:px-12; }
-  /* Fluid vertical rhythm — scales smoothly from phone to ultra-wide instead of jumping at breakpoints */
-  .section-gap { padding-block: clamp(3.5rem, 2rem + 6vw, 7rem); }
+  /* Fluid vertical rhythm — scales smoothly from phone to ultra-wide instead of jumping at breakpoints.
+     Tightened so adjacent sections (whose top+bottom padding stack) don't leave an oversized gap. */
+  .section-gap { padding-block: clamp(2.5rem, 1.75rem + 3vw, 4.5rem); }
   .safe-x { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
   .animate-marquee { animation: marquee var(--duration) linear infinite; }
   .animate-marquee-vertical { animation: marquee-vertical var(--duration) linear infinite; }
