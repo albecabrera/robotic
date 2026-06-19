@@ -189,17 +189,19 @@ section[id], main[id] {
 
 @layer utilities {
   .section-shell { @apply mx-auto w-full max-w-screen-2xl px-4 sm:px-6 lg:px-8 2xl:px-12; }
-  .section-gap { @apply py-14 sm:py-18 lg:py-24 2xl:py-28; }
+  /* Fluid vertical rhythm — scales smoothly from phone to ultra-wide instead of jumping at breakpoints */
+  .section-gap { padding-block: clamp(3.5rem, 2rem + 6vw, 7rem); }
   .safe-x { padding-left: max(1rem, env(safe-area-inset-left)); padding-right: max(1rem, env(safe-area-inset-right)); }
   .animate-marquee { animation: marquee var(--duration) linear infinite; }
   .animate-marquee-vertical { animation: marquee-vertical var(--duration) linear infinite; }
   .animate-scroll { animation: scroll var(--animation-duration, 40s) var(--animation-direction, forwards) linear infinite; }
   .dud { color: #00ff00; opacity: 0.7; }
 
-  /* Type scale */
+  /* Fluid type scale — clamp(min, preferred, max) so every heading reads well on any device.
+     Preferred term tuned so the small end matches phones (~375px) and the large end ultra-wide. */
   .eyebrow { @apply text-xs font-semibold uppercase tracking-widest text-muted-foreground; }
-  .heading-1 { @apply text-4xl font-bold sm:text-5xl lg:text-6xl; }
-  .heading-2 { @apply text-3xl font-bold sm:text-4xl; }
-  .heading-3 { @apply text-xl font-semibold sm:text-2xl; }
-  .lead { @apply text-base leading-7 text-muted-foreground sm:text-lg; }
+  .heading-1 { font-size: clamp(2.25rem, 1.63rem + 2.65vw, 3.75rem); @apply font-bold text-balance; }
+  .heading-2 { font-size: clamp(1.875rem, 1.62rem + 1.1vw, 2.5rem); @apply font-bold text-balance; }
+  .heading-3 { font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem); @apply font-semibold text-balance; }
+  .lead { font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); @apply leading-7 text-muted-foreground text-pretty; }
 }

@@ -67,8 +67,8 @@ export const Testimonials = () => {
           <div className="flex justify-center">
             <div className="rounded-lg border border-border bg-card px-4 py-1 text-sm">Lernvideos</div>
           </div>
-          <h2 className="mt-5 text-2xl font-semibold tracking-tight md:text-4xl">Kurz wiederholen, sicher anwenden</h2>
-          <p className="mt-5 text-center text-muted-foreground">Nutze die Videos zum Nacharbeiten, Üben und Vorbereiten.</p>
+          <h2 className="mt-5 heading-2 text-center">Kurz wiederholen, sicher anwenden</h2>
+          <p className="mt-4 lead text-center">Nutze die Videos zum Nacharbeiten, Üben und Vorbereiten.</p>
         </motion.div>
 
         <div className="mt-10 [mask-image:linear-gradient(to_right,transparent,black_10%,black_90%,transparent)]">

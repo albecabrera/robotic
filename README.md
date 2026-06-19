@@ -109,6 +109,22 @@ Construye con `BASE_PATH=/robotic` y copia `out/` a `/Users/acabrera/xampp-data/
 
 > El directorio `out/` está en `.gitignore` — nunca se commitea el build.
 
+## Tipografía y responsividad
+
+El sistema de tipos vive en `app/globals.css` (`@layer utilities`) y es **fluido** — escala con `clamp(min, preferido, max)` en vez de saltar por breakpoint, así cada texto se ve proporcionado de móvil 320px a ultra-wide.
+
+| Clase | Tamaño fluido | Uso |
+|---|---|---|
+| `.heading-1` | `clamp(2.25rem, 1.63rem + 2.65vw, 3.75rem)` | Títulos hero (36→60px) |
+| `.heading-2` | `clamp(1.875rem, 1.62rem + 1.1vw, 2.5rem)` | Títulos de sección (30→40px) |
+| `.heading-3` | `clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem)` | Subtítulos (20→24px) |
+| `.lead` | `clamp(1rem, 0.95rem + 0.25vw, 1.125rem)` | Párrafo introductorio (16→18px) |
+| `.eyebrow` | `text-xs` | Etiqueta superior en mayúsculas |
+
+- **`text-balance` / `text-pretty`**: los headings usan `text-balance` (reparte líneas parejas, evita huérfanas) y los `.lead` usan `text-pretty`.
+- **Ritmo vertical fluido**: `.section-gap` usa `padding-block: clamp(3.5rem, 2rem + 6vw, 7rem)` — todas las secciones comparten el mismo espaciado proporcional.
+- **Consistencia**: cada sección usa `.section-shell` (ancho máximo + padding lateral) + `.section-gap`; los títulos usan `.heading-2`/`.lead` en vez de tamaños hardcodeados.
+
 ## Decisiones técnicas
 
 - **Dark mode only**: `html.dark` fijo + `forcedTheme="dark"` + `enableSystem={false}` en `next-themes`.
