@@ -53,6 +53,8 @@ export default function Home() {
         <RainingLetters />
       </section>
 
+      <LearningRoadmap />
+
       <section id="programmieren" className="section-shell section-gap">
         <div className="grid items-center gap-12 lg:grid-cols-2">
           <div>
@@ -68,8 +70,6 @@ export default function Home() {
           <OrbitingSkills />
         </div>
       </section>
-
-      <LearningRoadmap />
 
       <section id="kurse">
         <VerticalTabs />
