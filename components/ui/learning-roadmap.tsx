@@ -2,6 +2,7 @@
 
 import { useEffect, useRef, useState } from "react"
 import { motion, useInView } from "framer-motion"
+import { accent } from "@/lib/accents"
 import {
   Database,
   Code2,
@@ -35,7 +36,7 @@ const steps = [
       { label: "Datenschutz", code: false },
       { label: "Programmieren", code: true },
     ] as Topic[],
-    color: "#f97316",
+    color: accent.orange,
     bg: "bg-orange-500/10 border-orange-500/30",
     num: "01",
     target: 1,
@@ -55,7 +56,7 @@ const steps = [
       { label: "Turtle-Grafik", code: true },
       { label: "Python-Grundlagen", code: true },
     ] as Topic[],
-    color: "#a855f7",
+    color: accent.purple,
     bg: "bg-purple-500/10 border-purple-500/30",
     num: "02",
     target: 2,
@@ -74,7 +75,7 @@ const steps = [
       { label: "Webentwicklung", code: true },
       { label: "Python vertieft", code: true },
     ] as Topic[],
-    color: "#3b82f6",
+    color: accent.blue,
     bg: "bg-blue-500/10 border-blue-500/30",
     num: "03",
     target: 3,
@@ -96,7 +97,7 @@ const steps = [
       { label: "Datenschutz & Recht", code: false },
       { label: "Informatik & Gesellschaft", code: false },
     ] as Topic[],
-    color: "#22c55e",
+    color: accent.green,
     bg: "bg-green-500/10 border-green-500/30",
     num: "04",
     target: 4,
@@ -108,37 +109,37 @@ const sekISchwerpunkte = [
     icon: Database,
     title: "Daten und Informationen",
     desc: "Wie werden Informationen digital dargestellt, gespeichert, verarbeitet und übertragen?",
-    color: "#f97316",
+    color: accent.orange,
   },
   {
     icon: Code2,
     title: "Algorithmen und Programmierung",
     desc: "Wie lassen sich Probleme systematisch lösen? Die Schülerinnen und Schüler entwickeln eigene Programme und lernen grundlegende Konzepte des Programmierens kennen.",
-    color: "#a855f7",
+    color: accent.purple,
   },
   {
     icon: Cpu,
     title: "Informatiksysteme",
     desc: "Wie funktionieren Computer, Netzwerke und digitale Geräte? Die Lernenden erhalten Einblicke in Hard- und Software sowie in die Funktionsweise des Internets.",
-    color: "#fbbf24",
+    color: accent.amber,
   },
   {
     icon: Network,
     title: "Digitale Kommunikation und Vernetzung",
     desc: "Wie kommunizieren Menschen und Geräte miteinander? Themen sind unter anderem Netzwerke, Internetdienste und digitale Zusammenarbeit.",
-    color: "#3b82f6",
+    color: accent.blue,
   },
   {
     icon: ShieldCheck,
     title: "Datenschutz und IT-Sicherheit",
     desc: "Wie können persönliche Daten geschützt werden? Die Schülerinnen und Schüler setzen sich mit Datensicherheit, Verschlüsselung und einem verantwortungsvollen Umgang mit digitalen Medien auseinander.",
-    color: "#ef4444",
+    color: accent.red,
   },
   {
     icon: Users,
     title: "Informatik, Mensch und Gesellschaft",
     desc: "Welche Auswirkungen haben Digitalisierung, Künstliche Intelligenz und digitale Technologien auf unseren Alltag, unsere Arbeitswelt und die Gesellschaft?",
-    color: "#22c55e",
+    color: accent.green,
   },
 ]
 
@@ -148,35 +149,35 @@ const inhaltsfelder = [
     title: "Daten und ihre Strukturierung",
     phasen: "EF · Q1 · Q2",
     desc: "Von einfachen Datentypen über Klassen und Objekte bis zu relationalen Datenbanken — wie werden Daten modelliert, strukturiert und verwaltet?",
-    color: "#f97316",
+    color: accent.orange,
   },
   {
     icon: GitBranch,
     title: "Algorithmik",
     phasen: "EF · Q1 · Q2",
     desc: "Kontrollstrukturen, rekursive Algorithmen, Sortier- und Suchverfahren sowie die Analyse von Effizienz und Korrektheit.",
-    color: "#a855f7",
+    color: accent.purple,
   },
   {
     icon: FileCode,
     title: "Formale Sprachen und Automaten",
     phasen: "Q2",
     desc: "Endliche Automaten, reguläre Ausdrücke und die theoretischen Grundlagen der Informatik — bis hin zu den Grenzen der Berechenbarkeit.",
-    color: "#fbbf24",
+    color: accent.amber,
   },
   {
     icon: Server,
     title: "Informatiksysteme",
     phasen: "EF · Q1",
     desc: "Rechnerarchitektur, Schichtenmodelle, Client-Server-Systeme, Protokolle und die Funktionsweise moderner Netzwerke.",
-    color: "#3b82f6",
+    color: accent.blue,
   },
   {
     icon: Globe,
     title: "Informatik, Mensch und Gesellschaft",
     phasen: "EF · Q1 · Q2",
     desc: "Datenschutz, ethische Fragen der KI, gesellschaftliche Auswirkungen der Digitalisierung und rechtliche Rahmenbedingungen.",
-    color: "#22c55e",
+    color: accent.green,
   },
 ]
 
@@ -190,7 +191,7 @@ const phasen = [
       "Client-Server-Architekturen und Internet",
       "Datenschutz und verantwortungsvoller Umgang",
     ],
-    color: "#f97316",
+    color: accent.orange,
   },
   {
     label: "Q1",
@@ -201,7 +202,7 @@ const phasen = [
       "Bäume als nicht-lineare Datenstruktur",
       "Kommunikation in vernetzten Systemen",
     ],
-    color: "#3b82f6",
+    color: accent.blue,
   },
   {
     label: "Q2",
@@ -212,7 +213,7 @@ const phasen = [
       "Algorithmen auf Graphen",
       "Grenzen der Berechenbarkeit",
     ],
-    color: "#22c55e",
+    color: accent.green,
   },
 ]
 
@@ -305,7 +306,7 @@ function RoadmapStep({ step, index }: { step: (typeof steps)[0]; index: number }
       </motion.div>
 
       <div className="mt-4 w-full text-center lg:text-left">
-        <span className="inline-block rounded-full px-2 py-0.5 text-[10px] font-semibold uppercase tracking-widest text-muted-foreground border border-border mb-2">
+        <span className="inline-block rounded-full px-2 py-0.5 text-[11px] font-semibold uppercase tracking-widest text-muted-foreground border border-border mb-2">
           {step.grade}
         </span>
         <h3 className="text-base font-bold text-foreground">{step.title}</h3>
@@ -315,7 +316,7 @@ function RoadmapStep({ step, index }: { step: (typeof steps)[0]; index: number }
           {step.tools.map((t) => (
             <motion.span
               key={t}
-              className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+              className="rounded-full px-2 py-0.5 text-[11px] font-medium"
               style={{ background: `${step.color}18`, color: step.color }}
               whileHover={{ scale: 1.1, background: `${step.color}30` }}
               transition={{ duration: 0.15 }}
@@ -327,14 +328,14 @@ function RoadmapStep({ step, index }: { step: (typeof steps)[0]; index: number }
 
         {step.topics.length > 0 && (
           <div className="mt-3">
-            <p className="mb-1 text-[9px] uppercase tracking-widest text-muted-foreground/50">
+            <p className="mb-1 text-[11px] uppercase tracking-widest text-muted-foreground/50">
               Lehrplan-Themen
             </p>
             <div className="flex flex-wrap justify-center gap-1 lg:justify-start">
               {step.topics.map((t) => (
                 <span
                   key={t.label}
-                  className="rounded-full px-2 py-0.5 text-[10px] font-medium"
+                  className="rounded-full px-2 py-0.5 text-[11px] font-medium"
                   style={
                     t.code
                       ? { border: `1px solid ${step.color}55`, color: `${step.color}bb` }
@@ -411,7 +412,7 @@ function InhaltsfeldCard({
           <item.icon className="h-4 w-4" style={{ color: item.color }} />
         </div>
         <span
-          className="rounded-full px-2 py-0.5 text-[9px] font-medium tracking-wide"
+          className="rounded-full px-2 py-0.5 text-[11px] font-medium tracking-wide"
           style={{ background: `${item.color}12`, color: item.color }}
         >
           {item.phasen}
@@ -522,7 +523,7 @@ export default function LearningRoadmap() {
           </div>
 
           <div className="mt-12">
-            <p className="mb-6 text-center text-[10px] uppercase tracking-widest text-muted-foreground/50">
+            <p className="mb-6 text-center text-[11px] uppercase tracking-widest text-muted-foreground/50">
               Schwerpunkte des Informatikunterrichts
             </p>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -533,7 +534,7 @@ export default function LearningRoadmap() {
           </div>
 
           <div className="mt-10 rounded-xl border border-border bg-muted/20 p-6 sm:p-8">
-            <p className="mb-1 text-[10px] uppercase tracking-widest text-muted-foreground/50">
+            <p className="mb-1 text-[11px] uppercase tracking-widest text-muted-foreground/50">
               Unser Ziel
             </p>
             <p className="mt-2 text-sm leading-7 text-muted-foreground">
@@ -610,7 +611,7 @@ export default function LearningRoadmap() {
 
           {/* Inhaltsfelder */}
           <div className="mt-12">
-            <p className="mb-6 text-center text-[10px] uppercase tracking-widest text-muted-foreground/50">
+            <p className="mb-6 text-center text-[11px] uppercase tracking-widest text-muted-foreground/50">
               5 Inhaltsfelder des Kernlehrplans
             </p>
             <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3">
@@ -622,7 +623,7 @@ export default function LearningRoadmap() {
 
           {/* Phasenübersicht */}
           <div className="mt-14">
-            <p className="mb-1 text-center text-[10px] uppercase tracking-widest text-muted-foreground/50">
+            <p className="mb-1 text-center text-[11px] uppercase tracking-widest text-muted-foreground/50">
               Phasenübersicht
             </p>
             <p className="mt-1 text-center text-xs text-muted-foreground/60">

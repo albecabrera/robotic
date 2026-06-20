@@ -11,6 +11,7 @@ import appInventorImg from "@/app/img/appinventor.jpeg"
 import calliopeImg from "@/app/img/calliope.jpeg"
 import xlogoImg from "@/app/img/xlogo.png"
 import tigerjythonImg from "@/app/img/TigerJython.jpg"
+import { accent } from "@/lib/accents"
 
 type ToolEntry = {
   name: string
@@ -23,15 +24,15 @@ type ToolEntry = {
 }
 
 const programmingTools: ToolEntry[] = [
-  { name: "Cubi",               level: "Kl. 5–7",  tag: "Blockprogrammierung", href: "https://it-for-kids.org/cubi/",                imgSrc: cubiImg.src,         color: "#3b82f6" },
+  { name: "Cubi",               level: "Kl. 5–7",  tag: "Blockprogrammierung", href: "https://it-for-kids.org/cubi/",                imgSrc: cubiImg.src,         color: accent.blue },
   { name: "Scratch",            level: "Kl. 5–7",  tag: "Blockprogrammierung", href: "https://scratch.mit.edu/",                     Icon: SiScratch,             color: "#ff8c1a" },
-  { name: "App Inventor",       level: "WP",        tag: "App-Entwicklung",     href: "https://appinventor.mit.edu/",                 imgSrc: appInventorImg.src,  color: "#22c55e" },
-  { name: "Calliope / Callibot",level: "WP",        tag: "Physical Computing",  href: "https://calliope.cc/",                         imgSrc: calliopeImg.src,     color: "#a855f7" },
+  { name: "App Inventor",       level: "WP",        tag: "App-Entwicklung",     href: "https://appinventor.mit.edu/",                 imgSrc: appInventorImg.src,  color: accent.green },
+  { name: "Calliope / Callibot",level: "WP",        tag: "Physical Computing",  href: "https://calliope.cc/",                         imgSrc: calliopeImg.src,     color: accent.purple },
   { name: "XLogo",              level: "WP",        tag: "Turtle-Grafik",       href: "https://xlogo.inf.ethz.ch/release/latest/#/",  imgSrc: xlogoImg.src,        color: "#2ecc71" },
-  { name: "TigerJython",        level: "WP",        tag: "Python-Einführung",   href: "https://tigerjython.ch/",                      imgSrc: tigerjythonImg.src,  color: "#fbbf24" },
-  { name: "HTML & CSS",         level: "WP 9/10",   tag: "Webentwicklung",      href: "https://developer.mozilla.org/en-US/docs/Web/HTML", Icon: SiHtml5,          color: "#ef4444" },
-  { name: "Python",             level: "Kl. 9+",    tag: "Skriptsprache",       href: "https://www.python.org/",                      Icon: SiPython,              color: "#3b82f6" },
-  { name: "Java",               level: "EF–Q2",     tag: "OOP",                 href: "https://www.java.com/",                        Icon: Coffee,                color: "#f97316" },
+  { name: "TigerJython",        level: "WP",        tag: "Python-Einführung",   href: "https://tigerjython.ch/",                      imgSrc: tigerjythonImg.src,  color: accent.amber },
+  { name: "HTML & CSS",         level: "WP 9/10",   tag: "Webentwicklung",      href: "https://developer.mozilla.org/en-US/docs/Web/HTML", Icon: SiHtml5,          color: accent.red },
+  { name: "Python",             level: "Kl. 9+",    tag: "Skriptsprache",       href: "https://www.python.org/",                      Icon: SiPython,              color: accent.blue },
+  { name: "Java",               level: "EF–Q2",     tag: "OOP",                 href: "https://www.java.com/",                        Icon: Coffee,                color: accent.orange },
 ]
 
 const container = {
@@ -100,13 +101,13 @@ function ToolCard({ tool }: { tool: ToolEntry }) {
         <span className="relative z-10 text-xs font-semibold text-foreground leading-tight">
           {tool.name}
         </span>
-        <span className="relative z-10 text-[10px] text-muted-foreground">
+        <span className="relative z-10 text-[11px] text-muted-foreground">
           {tool.level}
         </span>
 
         {/* tag badge that slides in on hover */}
         <motion.span
-          className="absolute bottom-2 right-2 z-10 rounded-full px-2 py-0.5 text-[9px] font-semibold"
+          className="absolute bottom-2 right-2 z-10 rounded-full px-2 py-0.5 text-[11px] font-semibold"
           style={{ background: `${tool.color}22`, color: tool.color }}
           initial={{ opacity: 0, x: 6 }}
           whileHover={{ opacity: 1, x: 0 }}

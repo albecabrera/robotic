@@ -13,6 +13,7 @@ import ElternSection from "@/components/ui/eltern-section"
 import MaterialFilter from "@/components/ui/material-filter"
 import ProgrammingToolsGrid from "@/components/ui/programming-tools-grid"
 import CurriculaCards from "@/components/ui/curricula-cards"
+import { accent } from "@/lib/accents"
 
 
 const curricula = [
@@ -92,7 +93,7 @@ export default function Home() {
             <MaterialFilter />
           </div>
           <div className="mt-10 flex justify-center">
-            <GlowingButton href="#kontakt" glowColor="#3b82f6">
+            <GlowingButton href="#kontakt" glowColor={accent.blue}>
               Herrn Cabrera fragen
             </GlowingButton>
           </div>
@@ -115,10 +116,10 @@ export default function Home() {
       </section>
 
       <div className="section-shell pb-16 flex justify-center gap-4">
-        <GlowingButton href="#eltern" glowColor="#a855f7">
+        <GlowingButton href="#eltern" glowColor={accent.purple}>
           Für Eltern
         </GlowingButton>
-        <GlowingButton href="#kontakt" glowColor="#f97316">
+        <GlowingButton href="#kontakt" glowColor={accent.orange}>
           Kontakt aufnehmen
         </GlowingButton>
       </div>

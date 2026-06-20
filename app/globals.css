@@ -43,25 +43,6 @@
 
 :root {
   --radius: 0.75rem;
-  --background: #ffffff;
-  --foreground: #171717;
-  --card: #ffffff;
-  --card-foreground: #171717;
-  --popover: #ffffff;
-  --popover-foreground: #171717;
-  --primary: #222222;
-  --primary-foreground: #fafafa;
-  --secondary: #f7f7f7;
-  --secondary-foreground: #222222;
-  --muted: #f7f7f7;
-  --muted-foreground: #707070;
-  --accent: #f7f7f7;
-  --accent-foreground: #222222;
-  --destructive: #e5484d;
-  --border: #e5e5e5;
-  --input: #e5e5e5;
-  --ring: #a1a1a1;
-
   --background: oklch(1 0 0);
   --foreground: oklch(0.145 0 0);
   --card: oklch(1 0 0);
@@ -83,25 +64,6 @@
 }
 
 .dark {
-  --background: #171717;
-  --foreground: #fafafa;
-  --card: #222222;
-  --card-foreground: #fafafa;
-  --popover: #222222;
-  --popover-foreground: #fafafa;
-  --primary: #fafafa;
-  --primary-foreground: #222222;
-  --secondary: #333333;
-  --secondary-foreground: #fafafa;
-  --muted: #333333;
-  --muted-foreground: #a1a1a1;
-  --accent: #333333;
-  --accent-foreground: #fafafa;
-  --destructive: #ff6b6b;
-  --border: rgb(255 255 255 / 10%);
-  --input: rgb(255 255 255 / 15%);
-  --ring: #707070;
-
   --background: oklch(0.145 0 0);
   --foreground: oklch(0.985 0 0);
   --card: oklch(0.205 0 0);
@@ -113,7 +75,8 @@
   --secondary: oklch(0.269 0 0);
   --secondary-foreground: oklch(0.985 0 0);
   --muted: oklch(0.269 0 0);
-  --muted-foreground: oklch(0.708 0 0);
+  /* Lifted from 0.708 → 0.75 for better contrast of secondary text on the dark background. */
+  --muted-foreground: oklch(0.75 0 0);
   --accent: oklch(0.269 0 0);
   --accent-foreground: oklch(0.985 0 0);
   --destructive: oklch(0.704 0.191 22.216);
@@ -205,4 +168,16 @@ section[id], main[id] {
   .heading-2 { font-size: clamp(1.875rem, 1.62rem + 1.1vw, 2.5rem); @apply font-bold text-balance; }
   .heading-3 { font-size: clamp(1.25rem, 1.1rem + 0.7vw, 1.5rem); @apply font-semibold text-balance; }
   .lead { font-size: clamp(1rem, 0.95rem + 0.25vw, 1.125rem); @apply leading-7 text-muted-foreground text-pretty; }
+}
+
+/* Full-text search highlights (CSS Custom Highlight API — no DOM mutation, React-safe). */
+::highlight(site-search) {
+  background-color: rgba(59, 130, 246, 0.35);
+  color: #fff;
+  border-radius: 2px;
+}
+::highlight(site-search-active) {
+  background-color: #f97316;
+  color: #000;
+  border-radius: 2px;
 }

@@ -2,6 +2,7 @@
 
 import React, { useEffect, useRef, useState } from "react"
 import { useAuth } from "@/contexts/auth-context"
+import { SiteSearch } from "@/components/ui/site-search"
 
 const navItems = [
   { label: "Lernweg", href: "#roadmap" },
@@ -128,6 +129,8 @@ const Navbar1 = () => {
           ))}
         </nav>
 
+
+        <SiteSearch />
 
         {/* Admin avatar — top-right */}
         {isAdmin ? (

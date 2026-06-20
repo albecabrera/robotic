@@ -19,7 +19,6 @@ Portal de Informatik para la **Elisabeth-Selbert-Gesamtschule Bonn**. Página ú
 | [lucide-react](https://lucide.dev) | 1.x | Íconos |
 | `react-icons` | — | Logos de lenguajes (SiScratch, SiPython, SiHtml5) |
 | `class-variance-authority`, `clsx`, `tailwind-merge` | — | Composición de clases (`cn()`) |
-| `dotted-map` | 3.x | Mapa de puntos (`world-map.tsx`) |
 | `tw-animate-css` | 1.x | Utilidades de animación CSS |
 
 ## Comandos
@@ -49,7 +48,8 @@ components/
   ui/
     programming-tools-grid.tsx   # Grid animado de herramientas (stagger + hover spring)
     learning-roadmap.tsx         # Roadmap Kl.5→Abitur con contadores animados en los números
-    project-showcase.tsx         # Tarjetas de proyectos de alumnos (hover glow + emoji wobble)
+    project-showcase.tsx         # Proyecto destacado xLogo (galería + lightbox) + tarjetas de proyectos
+    site-search.tsx              # Búsqueda full-text en la página (lupa en navbar + Cmd/Ctrl+K)
     curricula-cards.tsx          # Tarjetas de Lehrpläne con botón de descarga
     material-card.tsx            # Tarjeta de materiales (spring hover)
     material-filter.tsx          # Filtro de materiales por nivel
@@ -60,15 +60,18 @@ components/
     modern-animated-hero-section.tsx  # RainingLetters: lluvia de caracteres (100 nodos, RAF)
     vertical-tabs.tsx            # Tabs de cursos con auto-play e imágenes
     testimonials-columns-1.tsx   # Carrusel horizontal de Lernvideos
-    navbar-1.tsx                 # Navegación con scroll-spy
+    navbar-1.tsx                 # Navegación con scroll-spy + botón de búsqueda
     footer-column.tsx            # Footer 4 columnas
-    …                            # glowing-button, shimmer-button, spotlight, timeline, etc.
+    …                            # glowing-button, spline-hero, splite, accordion, etc.
 public/
   docs/
     lehrplan-7-8.pdf             # Lehrplan interno Jahrgänge 7/8
     lehrplan-9-10.docx           # Lehrplan interno Jahrgänge 9/10
+  projekte/
+    xlogo/                       # Stadtlandschaften de alumnos (WP-Informatik 7)
 lib/
   utils.ts          # cn() — clsx + tailwind-merge
+  accents.ts        # Paleta de acento centralizada (blue, orange, green, purple, amber, red, teal)
 ```
 
 ## Secciones (`app/page.tsx`)
@@ -80,7 +83,7 @@ lib/
 | `#programmieren` | Herramientas: Cubi, Scratch, App Inventor, XLogo, TigerJython, HTML/CSS, Python, Java |
 | `#roadmap` | Von Klasse 5 bis zum Abitur — roadmap con contadores animados |
 | `#kurse` | Tabs de cursos con imágenes |
-| `#projekte` | Proyectos de alumnos |
+| `#projekte` | Proyecto destacado **"Eine Stadtlandschaft mit xLogo bauen"** (WP-Informatik 7, galería + lightbox) + tarjetas de proyectos |
 | `#materialien` | Materiales filtrados por nivel (Kl. 5–7, 7–10, EF–Q2) |
 | `#lehrplaene` | Lehrpläne internos con descarga de PDF/Word para Jg. 7/8 y 9/10 |
 | `#eltern` | Sección para padres |
@@ -109,6 +112,8 @@ Construye con `BASE_PATH=/robotic` y copia `out/` a `/Users/acabrera/xampp-data/
 
 > El directorio `out/` está en `.gitignore` — nunca se commitea el build.
 
+> **Por qué copia y no symlink/bind-mount**: el contenedor XAMPP corre en Docker (Apache en el puerto 80). Un symlink a `out/` apunta a un path del host invisible dentro del contenedor; un bind-mount de `out/` se rompe porque `next build` recrea el directorio (nuevo inode) y VirtioFS pierde la referencia. La copia escribe archivos reales dentro del volumen `htdocs` ya montado — inmune a ambos problemas. Si el browser muestra una versión vieja, es caché: `Cmd+Shift+R`.
+
 ## Tipografía y responsividad
 
 El sistema de tipos vive en `app/globals.css` (`@layer utilities`) y es **fluido** — escala con `clamp(min, preferido, max)` en vez de saltar por breakpoint, así cada texto se ve proporcionado de móvil 320px a ultra-wide.
@@ -121,6 +126,8 @@ El sistema de tipos vive en `app/globals.css` (`@layer utilities`) y es **fluido
 | `.lead` | `clamp(1rem, 0.95rem + 0.25vw, 1.125rem)` | Párrafo introductorio (16→18px) |
 | `.eyebrow` | `text-xs` | Etiqueta superior en mayúsculas |
 
+- **Piso de legibilidad 11px**: no hay tamaños menores a `text-[11px]` — los micro-tamaños (`9px`/`10px`) se eliminaron para mejorar legibilidad y accesibilidad, sobre todo en móvil.
+- **Contraste en oscuro**: `--muted-foreground` se subió a `oklch(0.75)` para que el texto secundario respire mejor sobre el fondo `oklch(0.145)`.
 - **`text-balance` / `text-pretty`**: los headings usan `text-balance` (reparte líneas parejas, evita huérfanas) y los `.lead` usan `text-pretty`.
 - **Ritmo vertical fluido**: `.section-gap` usa `padding-block: clamp(2.5rem, 1.75rem + 3vw, 4.5rem)` — todas las secciones comparten el mismo espaciado proporcional, ajustado para que el padding superior+inferior de secciones contiguas no deje un hueco excesivo.
 - **Consistencia**: cada sección usa `.section-shell` (ancho máximo + padding lateral) + `.section-gap`; los títulos usan `.heading-2`/`.lead` en vez de tamaños hardcodeados.
@@ -133,6 +140,8 @@ El sistema de tipos vive en `app/globals.css` (`@layer utilities`) y es **fluido
 - **Resiliencia WebGL**: `ErrorBoundary` en `splite.tsx` — si el browser no crea contexto WebGL, muestra un fallback SVG sin romper la página.
 - **Open Graph**: `metadataBase` + `openGraph` + `twitter` en `layout.tsx` — links compartidos generan preview en redes y mensajería.
 - **Puerto fijo**: `npm run dev` mata el proceso en `:3000` antes de arrancar — siempre mismo puerto.
+- **Búsqueda full-text** (`site-search.tsx`): usa la **CSS Custom Highlight API** (`CSS.highlights` + `Range`) — resalta coincidencias sin mutar el DOM, así no rompe el árbol de React. Atajo `Cmd/Ctrl+K`, navegación `↑↓`/`Enter`, contador `n/total`. Excluye la navbar via `TreeWalker`. Requiere Chromium/Arc o Safari 17.2+; en navegadores sin soporte muestra un aviso en vez de fallar.
+- **Paleta centralizada** (`lib/accents.ts`): los colores de acento recurrentes viven en un único módulo; los colores de marca de herramientas externas (Scratch, XLogo) quedan inline a propósito.
 
 ## Troubleshooting
 

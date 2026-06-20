@@ -165,7 +165,7 @@ export function VerticalTabs() {
                       )}
                     </div>
 
-                    <span className="text-[9px] md:text-[10px] font-medium mt-1 tabular-nums opacity-50">
+                    <span className="text-[11px] md:text-[11px] font-medium mt-1 tabular-nums opacity-50">
                       /{service.id}
                     </span>
 
