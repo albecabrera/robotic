@@ -30,9 +30,12 @@ npm run build          # build de producción estándar
 npm run build:xampp    # build con BASE_PATH=/robotic para XAMPP
 npm run deploy:xampp   # build:xampp + copia a /Users/acabrera/xampp-data/htdocs/robotic
 npm run lint           # ESLint
+npm run shots          # QA visual: capturas de las secciones clave (desktop + móvil) en .shots/
 ```
 
 Requisitos: **Node.js 20+**, browser con **WebGL habilitado** (ver Troubleshooting).
+
+> `npm run shots` necesita el dev server corriendo y el browser de Playwright (`npx playwright install chromium` una sola vez). Apunta a otra URL con `BASE=http://localhost/robotic npm run shots`. La salida en `.shots/` está en `.gitignore`.
 
 ## Estructura del proyecto
 

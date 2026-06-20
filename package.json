@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "build:xampp": "BASE_PATH=/robotic next build",
-    "deploy:xampp": "npm run build:xampp && rm -rf /Users/acabrera/xampp-data/htdocs/robotic && cp -r out /Users/acabrera/xampp-data/htdocs/robotic"
+    "deploy:xampp": "npm run build:xampp && rm -rf /Users/acabrera/xampp-data/htdocs/robotic && cp -r out /Users/acabrera/xampp-data/htdocs/robotic",
+    "shots": "node scripts/shots.mjs"
   },
   "dependencies": {
     "@radix-ui/react-accordion": "^1.2.12",
@@ -36,6 +37,7 @@
     "@types/react-dom": "^19.2.3",
     "eslint": "^9.39.4",
     "eslint-config-next": "^16.2.4",
+    "playwright": "^1.61.0",
     "tailwindcss": "^4.2.4",
     "typescript": "^6.0.3"
   }

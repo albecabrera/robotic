@@ -4,3 +4,6 @@ tsconfig.tsbuildinfo
 out/
 robotic3/
 informatik_esg/
+
+# Visual QA screenshots (npm run shots)
+.shots/
