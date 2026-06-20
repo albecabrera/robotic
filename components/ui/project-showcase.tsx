@@ -179,16 +179,16 @@ function FeaturedXLogo() {
             onClick={() => setLightbox(i)}
             whileHover={{ scale: 1.02 }}
             whileTap={{ scale: 0.98 }}
-            className="group relative overflow-hidden rounded-xl border bg-white"
+            className="group relative overflow-hidden rounded-xl border bg-[#0b0b0c]"
             aria-label={`${img.alt} — vergrößern`}
           >
             <Image
               src={img.src}
               alt={img.alt}
-              className="h-auto w-full"
+              className="h-auto w-full invert hue-rotate-180"
               sizes="(min-width: 640px) 33vw, 100vw"
             />
-            <span className="pointer-events-none absolute inset-0 bg-black/0 transition-colors group-hover:bg-black/5" />
+            <span className="pointer-events-none absolute inset-0 bg-white/0 transition-colors group-hover:bg-white/5" />
           </motion.button>
         ))}
       </div>
@@ -217,13 +217,13 @@ function FeaturedXLogo() {
               initial={{ scale: 0.95 }}
               animate={{ scale: 1 }}
               exit={{ scale: 0.95 }}
-              className="relative w-full max-w-5xl overflow-hidden rounded-xl bg-white"
+              className="relative w-full max-w-5xl overflow-hidden rounded-xl bg-[#0b0b0c]"
               onClick={(e) => e.stopPropagation()}
             >
               <Image
                 src={xlogoGallery[lightbox].src}
                 alt={xlogoGallery[lightbox].alt}
-                className="h-auto w-full"
+                className="h-auto w-full invert hue-rotate-180"
                 sizes="100vw"
               />
             </motion.div>
